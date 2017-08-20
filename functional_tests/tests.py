@@ -15,9 +15,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         # in header: Betleague
         self.assertEqual(self.browser.title, 'Betleague')
         # and table in body:
-        table = self.browser.find_element_by_id('#results_table')
+        table = self.browser.find_element_by_id('results_table')
         table_header = table.find_element_by_tag_name('th')
         # with header: League table
-        self.assertEqual('League table', table_header)
-
-        #self.fail('TODO')
+        self.assertEqual('League table', table_header.text)
