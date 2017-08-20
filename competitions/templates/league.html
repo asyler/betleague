@@ -11,6 +11,16 @@
                 <th>League table</th>
             </tr>
         </thead>
+        <tbody>
+            {% for match in matches %}
+                <tr>
+                    <td class="date">{{ match.datetime|date:"d.m.Y"  }}</td>
+                    <td class="time">{{ match.datetime|date:"H:i" }}</td>
+                    <td class="home_team">{{ match.home_team }}</td>
+                    <td class="away_team">{{ match.away_team }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 </body>
 </html>
