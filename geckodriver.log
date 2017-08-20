@@ -1,0 +1,30 @@
+1503224932906	geckodriver	INFO	geckodriver 0.18.0
+1503224932911	geckodriver	INFO	Listening on 127.0.0.1:60171
+1503224933990	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+1503224935568	Marionette	INFO	Listening on port 35217
+1503224935629	Marionette	WARN	TLS certificate errors will be ignored for this session
+1503224935676	Marionette	INFO	New connections will no longer be accepted
+1503225967376	geckodriver	INFO	geckodriver 0.18.0
+1503225967378	geckodriver	INFO	Listening on 127.0.0.1:42731
+1503225968453	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+1503225969824	Marionette	INFO	Listening on port 39333
+1503225969891	Marionette	WARN	TLS certificate errors will be ignored for this session
+1503225969918	Marionette	INFO	New connections will no longer be accepted
+1503226362664	geckodriver	INFO	geckodriver 0.18.0
+1503226362666	geckodriver	INFO	Listening on 127.0.0.1:50325
+1503226363743	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+1503226365146	Marionette	INFO	Listening on port 44485
+1503226365191	Marionette	WARN	TLS certificate errors will be ignored for this session
+1503226365385	Marionette	INFO	New connections will no longer be accepted
+1503226371182	geckodriver	INFO	geckodriver 0.18.0
+1503226371185	geckodriver	INFO	Listening on 127.0.0.1:35571
+1503226372272	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+1503226373644	Marionette	INFO	Listening on port 37071
+1503226373753	Marionette	WARN	TLS certificate errors will be ignored for this session
+1503226373918	Marionette	INFO	New connections will no longer be accepted
+1503227739688	geckodriver	INFO	geckodriver 0.18.0
+1503227739690	geckodriver	INFO	Listening on 127.0.0.1:40937
+1503227740767	geckodriver::marionette	INFO	Starting browser /usr/bin/firefox with args ["-marionette"]
+1503227742168	Marionette	INFO	Listening on port 42275
+1503227742207	Marionette	WARN	TLS certificate errors will be ignored for this session
+1503227742364	Marionette	INFO	New connections will no longer be accepted
