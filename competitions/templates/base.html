@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Betleague</title>
+
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+      <a class="navbar-brand" href="/">Betleague</a>
+
+      <ul class="nav navbar-nav navbar-right">
+          {% if user.id %}
+              <li class="navbar-text">Logged in as {{ user.email }}</li>
+              <li><a href="{% url 'logout' %}">Log out</a></li>
+          {% else %}
+              <li><a href="{% url 'login' %}">Login</a></li>
+          {% endif %}
+      </ul>
+    </div>
+    </nav>
+
+    {% block body %}
+    {% endblock %}
+</body>
+</html>

@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Betleague</title>
-</head>
-<body>
-    <table id="results_table">
+{% extends 'base.html' %}
+
+{% block body %}
+<table id="results_table">
         <thead>
             <tr>
                 <th>League table</th>
@@ -22,5 +18,4 @@
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}

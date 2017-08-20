@@ -1,7 +1,10 @@
+from unittest import skip
+
 from functional_tests.base import FunctionalTest
 
 
 class AdminTest(FunctionalTest):
+    @skip
     def test_admin_can_add_matches(self):
         # Alice goes to admin page.
         # She sees login form.
