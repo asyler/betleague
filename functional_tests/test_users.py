@@ -1,11 +1,15 @@
 from django.contrib.auth.models import User
 
+from accounts.factories import UserFactory
 from functional_tests.base import FunctionalTest
 
 
 class UsersTest(FunctionalTest):
     def setUp(self):
-        User.objects.create_user(username='ugo', password='ugo666')
+        self.user = UserFactory.create()
+        self.password = self.user.password
+        self.user.set_password(self.user.password)
+        self.user.save()
         super().setUp()
 
     def test_unauthenticated_can_login(self):
@@ -20,8 +24,8 @@ class UsersTest(FunctionalTest):
             lambda : self.browser.find_element_by_id('id_username')
         )
         # He fills his credentials
-        self.browser.find_element_by_id('id_username').send_keys('ugo')
-        self.browser.find_element_by_id('id_password').send_keys('ugo666')
+        self.browser.find_element_by_id('id_username').send_keys(self.user.username)
+        self.browser.find_element_by_id('id_password').send_keys(self.password)
         # and presses the only button
         self.browser.find_element_by_tag_name('button').click()
         # and now he is redirected back to main page.
