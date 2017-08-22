@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Sum
 from django.shortcuts import render
 
 # Create your views here.
@@ -7,7 +8,7 @@ from matches.models import Match, Bet
 
 def league(request):
     matches = Match.objects.all()
-    users = User.objects.all()
+    users = User.objects.annotate(total_points=Sum('bet__result')).order_by('pk').all()
     bets = Bet.objects.all().select_related('match')
 
     matches_array = {}

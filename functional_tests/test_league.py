@@ -1,14 +1,7 @@
-from unittest import skip
-
-from django.contrib.auth.models import User
-from django.core.management import call_command
-from django.utils import timezone
-
 from accounts.factories import UserFactory
 from functional_tests.base import FunctionalTest
 from functional_tests.pages.league import LeaguePage
 from matches.factories import FutureMatchFactory, PastMatchFactory, BetFactory
-from matches.models import Match
 
 
 class SmokeTest(FunctionalTest):
@@ -29,6 +22,7 @@ class LeagueTableTest(FunctionalTest):
     def setUp(self):
         self.future_match = FutureMatchFactory.create(home_team='Ajax',away_team='Barcelona',datetime="2017-01-09 05:04+00:00")
         self.past_match = PastMatchFactory.create(home_team='Bordo',away_team='Chelsea')
+        self.past_match2 = PastMatchFactory.create()
 
         self.user1 = UserFactory.create(username='ugo')
         self.user2 = UserFactory.create(username='ada')
@@ -41,27 +35,32 @@ class LeagueTableTest(FunctionalTest):
             [
                 None,
                 BetFactory.create(match=self.past_match, user=self.user2, home_score=2, away_score=0),
-            ] # past match
+            ], # past match
+            [
+                BetFactory.create(match=self.past_match2, user=self.user1, home_score=1, away_score=3),
+                BetFactory.create(match=self.past_match2, user=self.user2, home_score=0, away_score=0),
+            ]
         ]
 
         self.past_match.set_score(home_score=2,away_score=0)
+        self.past_match2.set_score(home_score=0,away_score=0)
 
         super().setUp()
 
-    def test_page_show_matches(self):
+    def test_page_shows_matches(self):
         # Ugo goes to main page and see
         self.browser.get(self.live_server_url)
         # column with mathces
         Page = LeaguePage(self)
         matches = Page.get_matches()
-        self.assertEqual(len(matches), 2)
+        self.assertEqual(len(matches), 3)
         # with match date, time, away and home teams
         self.assertEqual(Page.get_match_info(matches[0],'home_team'), 'Ajax')
         self.assertEqual(Page.get_match_info(matches[1],'away_team'), 'Chelsea')
         self.assertEqual(Page.get_match_info(matches[0],'date'), '09.01.2017')
         self.assertEqual(Page.get_match_info(matches[0],'time'), '07:04') # using timezone
 
-    def test_page_show_users(self):
+    def test_page_shows_users(self):
         # Ugo goes to main page and see
         self.browser.get(self.live_server_url)
         # row with users
@@ -71,7 +70,7 @@ class LeagueTableTest(FunctionalTest):
         self.assertEqual(Page.get_user_username(users[0]), 'ugo')
         self.assertEqual(Page.get_user_username(users[1]), 'ada')
 
-    def test_page_show_users_bets_for_future_matches(self):
+    def test_page_shows_users_bets_for_future_matches(self):
         # Ugo goes to main page and see
         self.browser.get(self.live_server_url)
         # his bet he placed before on match Ajax-Barcelona.
@@ -82,7 +81,7 @@ class LeagueTableTest(FunctionalTest):
         bet = Page.find_bet('Ajax','Barcelona','ada')
         self.assertEqual(bet.text, '4 - 0')
 
-    def test_page_show_points_for_past_matches(self):
+    def test_page_shows_points_for_past_matches(self):
         # Ugo goes to main page and see
         self.browser.get(self.live_server_url)
         # an empty cell for Bordo-Chelsea, because he didn't bet that match
@@ -92,4 +91,15 @@ class LeagueTableTest(FunctionalTest):
         # and points for same match from ada.
         bet_result = Page.find_bet_result('Bordo', 'Chelsea', 'ada')
         self.assertEqual(bet_result.text, '12')
+
+    def test_page_shows_total_row(self):
+        # Ugo goes to main page
+        self.browser.get(self.live_server_url)
+        Page = LeaguePage(self)
+        # and see first row 'Total'
+        self.assertEqual(Page.get_total_row().find_element_by_tag_name('td').text, 'Total')
+        # and total points for all users
+        self.assertEqual(Page.get_total('ugo'),'1')
+        self.assertEqual(Page.get_total('ada'),'24')
+
 

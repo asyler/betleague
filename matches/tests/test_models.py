@@ -49,6 +49,19 @@ class MatchModelTest(TestCase):
 
         self.assertFalse(mock_save.called)
 
+    def test_has_result_true_for_past_match_with_result(self):
+        match = PastMatchFactory.create()
+        self.assertTrue(match.has_result)
+
+    def test_has_result_false_for_past_match_without_result(self):
+        match = PastMatchFactory.create(home_score=None, away_score=None)
+        self.assertFalse(match.has_result)
+
+    def test_has_result_false_for_future_match(self):
+        match = FutureMatchFactory.create()
+        self.assertFalse(match.has_result)
+
+
 class BetModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):

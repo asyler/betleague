@@ -18,6 +18,10 @@ class Match(models.Model):
     def in_future(self):
         return self.datetime > timezone.now()
 
+    @property
+    def has_result(self):
+        return self.home_score is not None
+
     def set_score(self, home_score, away_score):
         if not self.in_future:
             self.home_score = home_score
