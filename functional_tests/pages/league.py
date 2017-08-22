@@ -21,18 +21,24 @@ class LeaguePage(object):
     def get_user_username(self, user):
         return user.text
 
-    def find_bet(self, home_team, away_team, username):
+    def _find_bet(self, home_team, away_team, username, class_name):
         matches = self.get_matches()
         users = self.get_users()
         match = next((
             x for x in matches if
-            self.get_match_info(x,'home_team')==home_team and
-            self.get_match_info(x,'away_team')==away_team
+            self.get_match_info(x, 'home_team') == home_team and
+            self.get_match_info(x, 'away_team') == away_team
         ))
         user = next((
             x for x in users if
             x.text == username
         ))
         user_index = users.index(user)
-        bet = match.find_elements_by_class_name('bet')[user_index]
+        bet = match.find_elements_by_class_name(class_name)[user_index]
         return bet
+
+    def find_bet(self, home_team, away_team, username):
+        return self._find_bet(home_team, away_team, username, 'bet')
+
+    def find_bet_result(self, home_team, away_team, username):
+        return self._find_bet(home_team, away_team, username, 'bet_result')

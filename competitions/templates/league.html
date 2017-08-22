@@ -23,9 +23,15 @@
                     <td class="home_team">{{ match.home_team }}</td>
                     <td class="away_team">{{ match.away_team }}</td>
                     {% for user in users %}
-                        <td class="bet">
-                            {{ match.bets|get_item:user.pk|default_if_none:'' }}
-                        </td>
+                        {% if match.home_score %}
+                            <td class="bet_result">
+                                {{ match.bets|get_item:user.pk|get_property:'result'|default_if_none:'' }}
+                            </td>
+                        {% else %}
+                             <td class="bet">
+                                {{ match.bets|get_item:user.pk|default_if_none:'' }}
+                            </td>
+                        {% endif %}
                     {% endfor %}
                 </tr>
             {% endfor %}

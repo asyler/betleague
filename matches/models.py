@@ -5,16 +5,26 @@ from django.db import models
 # Create your models here.
 from django.utils import timezone
 
+from . import bet_result
 
 class Match(models.Model):
     home_team = models.TextField()
     away_team = models.TextField()
     datetime = models.DateTimeField()
+    home_score = models.IntegerField(null=True, blank=True)
+    away_score = models.IntegerField(null=True, blank=True)
 
     @property
     def in_future(self):
         return self.datetime > timezone.now()
 
+    def set_score(self, home_score, away_score):
+        if not self.in_future:
+            self.home_score = home_score
+            self.away_score = away_score
+            self.save()
+
+            [b.set_result() for b in self.bet_set.all()]
 
 def validate_match_datetime(value):
     match = Match.objects.get(pk=value)
@@ -26,6 +36,16 @@ class Bet(models.Model):
     away_score = models.IntegerField()
     match = models.ForeignKey(Match, validators=[validate_match_datetime])
     user = models.ForeignKey(User)
+    result = models.IntegerField(null=True, blank=True)
+
+    def set_result(self):
+        self.result = bet_result.calc_bet_result(
+            home_bet=self.home_score,
+            away_bet=self.away_score,
+            home_score=self.match.home_score,
+            away_score=self.match.away_score,
+        )
+        self.save()
 
     def __str__(self):
         return '{} - {}'.format(self.home_score, self.away_score)

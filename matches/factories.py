@@ -16,6 +16,9 @@ class MatchFactory(factory.django.DjangoModelFactory):
 class PastMatchFactory(MatchFactory):
     datetime = timezone.now() - timezone.timedelta(minutes=1)
 
+    home_score = factory.Faker('pyint')
+    away_score = factory.Faker('pyint')
+
 
 class FutureMatchFactory(MatchFactory):
     datetime = timezone.now() + timezone.timedelta(minutes=1)

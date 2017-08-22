@@ -14,8 +14,8 @@ class _UserFactory(factory.django.DjangoModelFactory):
 
 class UserFactory(object):
     @classmethod
-    def create(cls):
-        user = _UserFactory.create()
+    def create(cls, **kwargs):
+        user = _UserFactory.create(**kwargs)
         password = user.password
         user.set_password(password)
         user.save()
