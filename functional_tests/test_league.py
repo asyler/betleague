@@ -12,11 +12,7 @@ class SmokeTest(FunctionalTest):
         self.assertEqual(self.browser.title, 'Betleague')
         # and table in body:
 
-        table = LeaguePage(self).get_league_table()
-        table_header = table.find_element_by_tag_name('th')
-        # with header: League table
-        self.assertEqual('League table', table_header.text)
-
+        LeaguePage(self).get_league_table() #should not raise
 
 class LeagueTableTest(FunctionalTest):
     def setUp(self):
@@ -96,9 +92,7 @@ class LeagueTableTest(FunctionalTest):
         # Ugo goes to main page
         self.browser.get(self.live_server_url)
         Page = LeaguePage(self)
-        # and see first row 'Total'
-        self.assertEqual(Page.get_total_row().find_element_by_tag_name('td').text, 'Total')
-        # and total points for all users
+        # and see total points for all users
         self.assertEqual(Page.get_total('ugo'),'1')
         self.assertEqual(Page.get_total('ada'),'24')
 

@@ -1,0 +1,54 @@
+.row {
+    margin: 0;
+    display: flex;
+}
+
+.col-limited {
+    flex: 0 1;
+    white-space: nowrap;
+}
+
+.col-equal {
+    flex: 1 1;
+}
+
+.row#users {
+    font-weight: bold;
+}
+
+.col-fixed {
+    width: 400px;
+}
+
+.row.match:nth-child(odd){
+  background-color: #f8f8f8;
+}
+
+.row#total {
+    border-bottom: 1px solid #aaa;
+}
+
+.col-equal.bet_result, .col-equal.bet, .col-equal.username, .col-equal.points {
+    text-align: center;
+    border-left: 1px solid #aaa;
+    padding: 5px;
+}
+
+.row.match-info > div:not(:first-child) {
+    border-left: 1px solid #aaa;
+}
+
+.row.match-info > div {
+    padding: 5px 10px;
+}
+
+#results_table {
+    border: 1px solid #aaa;
+    padding: 0;
+    margin: 15px;
+}
+
+.row.match:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+}
+

@@ -11,14 +11,14 @@
                 {% endfor %}
             </div>
             <div class="row" id="total">
-                <div class="col-fixed"></div>
+                <div class="col-fixed total">Total</div>
                 {% for user in users %}
                     <div class="col-equal points">{{ user.total_points }}</div>
                 {% endfor %}
             </div>
             {% for match in matches.values %}
                 <div class="row match">
-                    <div class="row match-info col-fixed">
+                    <div class="row col-fixed">
                         <div class="col-limited date">{{ match.datetime|date:"d.m.Y"  }}</div>
                         <div class="col-limited time">{{ match.datetime|date:"H:i" }}</div>
                         <div class="col-equal home_team">{{ match.home_team }}</div>

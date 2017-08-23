@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% load competition_filters %}
+
+{% block body %}
+    <table id="results_table">
+        <thead>
+            <tr>
+                <th>League table</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="4"></td>
+                {% for user in users %}
+                    <td class="username">{{ user.username }}</td>
+                {% endfor %}
+            </tr>
+            <tr id="total">
+                <td colspan="4">Total</td>
+                {% for user in users %}
+                    <td class="points">{{ user.total_points }}</td>
+                {% endfor %}
+            </tr>
+            {% for match in matches.values %}
+                <tr class="match">
+                    <td class="date">{{ match.datetime|date:"d.m.Y"  }}</td>
+                    <td class="time">{{ match.datetime|date:"H:i" }}</td>
+                    <td class="home_team">{{ match.home_team }}</td>
+                    <td class="away_team">{{ match.away_team }}</td>
+                    {% for user in users %}
+                        {% if match.has_result %}
+                            <td class="bet_result">
+                                {{ match.bets|get_item:user.pk|get_property:'result'|default_if_none:'' }}
+                            </td>
+                        {% else %}
+                             <td class="bet">
+                                {{ match.bets|get_item:user.pk|default_if_none:'' }}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
