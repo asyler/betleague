@@ -131,3 +131,22 @@ class BetModelTest(TestCase):
 
         self.assertEqual(Bet.objects.all()[0].result, 6)
         self.assertEqual(Bet.objects.all()[1].result, 12)
+
+    def check_format(self, result):
+        # pass match with 5-4
+        bet = Bet()
+        bet.set_bet(result)
+
+        self.assertEqual(bet.home_score, 5)
+        self.assertEqual(bet.away_score, 4)
+
+    def test_check_formats(self):
+        self.check_format('5-4')
+        self.check_format('5 - 4')
+        self.check_format('5 -4')
+        self.check_format('  5-4 ')
+        self.check_format('5:  4 ')
+
+    def test_check_format_fail(self):
+        with self.assertRaises(ValidationError):
+            self.check_format('5=4')

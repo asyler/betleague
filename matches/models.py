@@ -1,3 +1,4 @@
+import re
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -16,6 +17,7 @@ class Match(models.Model):
 
     @property
     def in_future(self):
+        print(self.home_team,self.datetime,timezone.now())
         return self.datetime > timezone.now()
 
     @property
@@ -53,3 +55,11 @@ class Bet(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.home_score, self.away_score)
+
+    def set_bet(self, result):
+         match = re.match(r'\s*(\d+)\s*[-:]\s*(\d+)\s*', result)
+         if match:
+             self.home_score = int(match.group(1))
+             self.away_score = int(match.group(2))
+         else:
+             raise ValidationError('Wrong bet format')

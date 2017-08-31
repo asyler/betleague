@@ -6,4 +6,5 @@ def get_item(dictionary, key):
 
 @register.filter
 def get_property(obj, key):
+    #print(obj.fields)
     return getattr(obj,key, None)

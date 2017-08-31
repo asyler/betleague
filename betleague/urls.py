@@ -18,9 +18,11 @@ from django.contrib import admin
 from competitions.views import league
 
 import accounts.urls as accounts_urls
+import matches.views as matches_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include(accounts_urls)),
+    url(r'^my_bets', matches_views.user_bets, name='user_bets'),
     url(r'^$', league, name='home')
 ]

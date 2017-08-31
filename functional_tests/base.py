@@ -2,14 +2,19 @@ import os
 import time
 from datetime import datetime
 
+import sys
+from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
+
+from functional_tests.management.commands.create_session import create_pre_authenticated_session
 
 MAX_WAIT = 10
 SCREEN_DUMP_LOCATION = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), 'screendumps'
 )
+
 
 def wait(fn):
     def modified_fn(*args, **kwargs):
@@ -22,6 +27,7 @@ def wait(fn):
                     raise e
                 time.sleep(0.1)
     return modified_fn
+
 
 class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
@@ -70,3 +76,20 @@ class FunctionalTest(StaticLiveServerTestCase):
     @wait
     def wait_for(self, fn):
         return fn()
+
+    def create_pre_authenticated_session(self, username):
+        session_key, user = create_pre_authenticated_session(username)
+        ## to set a cookie we need to first visit the domain.
+        ## 404 pages load the quickest!
+        self.browser.get(self.live_server_url + "/404_no_such_url/")
+
+        cookies = dict(
+            name=settings.SESSION_COOKIE_NAME,
+            value=session_key,
+            #secure=False,
+            path='/',
+        )
+
+        self.browser.add_cookie(cookies)
+
+        return user
