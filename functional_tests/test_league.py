@@ -24,6 +24,8 @@ class LeagueTableTest(FunctionalTest):
                                                       datetime="2017-01-09 05:04+00:00")
         self.past_match = PastMatchFactory.create(home_team='Bordo', away_team='Chelsea')
         self.past_match2 = PastMatchFactory.create()
+        self.past_match3 = PastMatchFactory.create(home_team='Chelsea', away_team='Ajax',
+                                                   home_score=None, away_score=None)
 
         self.user1 = UserFactory.create(username='ugo')
         self.user2 = UserFactory.create(username='ada')
@@ -40,6 +42,10 @@ class LeagueTableTest(FunctionalTest):
             [
                 BetFactory.create(match=self.past_match2, user=self.user1, home_score=1, away_score=3),
                 BetFactory.create(match=self.past_match2, user=self.user2, home_score=0, away_score=0),
+            ],
+            [
+                None,
+                BetFactory.create(match=self.past_match3, user=self.user2, home_score=0, away_score=0),
             ]
         ]
 
@@ -54,7 +60,7 @@ class LeagueTableTest(FunctionalTest):
         # column with mathces
         Page = LeaguePage(self)
         matches = Page.get_matches()
-        self.assertEqual(len(matches), 3)
+        self.assertEqual(len(matches), 4)
         # with match date, time, away and home teams
         self.assertEqual(Page.get_match_info(matches[0], 'home_team'), 'Ajax')
         self.assertEqual(Page.get_match_info(matches[1], 'away_team'), 'Chelsea')
@@ -82,7 +88,7 @@ class LeagueTableTest(FunctionalTest):
         bet = Page.find_bet('Ajax', 'Barcelona', 'ada')
         self.assertEqual(bet.text, '4 - 0')
 
-    def test_page_shows_points_for_past_matches(self):
+    def test_page_shows_points_for_past_matches_with_results(self):
         # Ugo goes to main page and see
         self.browser.get(self.live_server_url)
         # an empty cell for Bordo-Chelsea, because he didn't bet that match
@@ -92,6 +98,17 @@ class LeagueTableTest(FunctionalTest):
         # and points for same match from ada.
         bet_result = Page.find_bet_result('Bordo', 'Chelsea', 'ada')
         self.assertEqual(bet_result.text, '12')
+
+    def test_page_shows_bet_for_past_matches_without_results(self):
+        # Ugo goes to main page and see
+        self.browser.get(self.live_server_url)
+        # an empty cell for Chelsea-Ajax, because he didn't bet that match
+        Page = LeaguePage(self)
+        bet_result = Page.find_bet('Chelsea', 'Ajax', 'ugo')
+        self.assertEqual(bet_result.text, '')
+        # and bet for same match from ada.
+        bet_result = Page.find_bet('Chelsea', 'Ajax', 'ada')
+        self.assertEqual(bet_result.text, '0 - 0')
 
     def test_page_shows_total_row(self):
         # Ugo goes to main page
