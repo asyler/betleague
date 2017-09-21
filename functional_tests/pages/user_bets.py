@@ -8,7 +8,7 @@ class UserBetsPage(object):
 
     def get_matches(self):
         return self.test.browser \
-            .find_elements_by_css_selector('div.match')
+            .find_elements_by_css_selector('tr.match')
 
     def get_match_body(self, match):
         return match.find_element_by_class_name('bet').text
