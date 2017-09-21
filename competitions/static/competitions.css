@@ -20,8 +20,8 @@
     width: 400px;
 }
 
-.row.match:nth-child(odd){
-  background-color: #f8f8f8;
+.row.match:nth-child(odd) {
+    background-color: #f8f8f8;
 }
 
 .row#total {

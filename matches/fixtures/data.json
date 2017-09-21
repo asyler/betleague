@@ -1,0 +1,134 @@
+[
+  {
+    "model": "matches.match",
+    "pk": 1,
+    "fields": {
+      "home_team": "Man City",
+      "away_team": "Chelsea",
+      "datetime": "2017-09-20T09:59:34.748Z",
+      "home_score": 3,
+      "away_score": 0
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 2,
+    "fields": {
+      "home_team": "Red Bulls",
+      "away_team": "Ajax",
+      "datetime": "2017-09-20T09:59:34.748Z",
+      "home_score": 2,
+      "away_score": 2
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 3,
+    "fields": {
+      "home_team": "Shakhtar FC",
+      "away_team": "Bolton",
+      "datetime": "2017-09-23T10:01:34.748Z",
+      "home_score": null,
+      "away_score": null
+    }
+  },
+  {
+    "model": "matches.match",
+    "pk": 4,
+    "fields": {
+      "home_team": "Brugge",
+      "away_team": "BATE",
+      "datetime": "2017-09-23T10:01:34.748Z",
+      "home_score": null,
+      "away_score": null
+    }
+  },
+  {
+    "model": "matches.bet",
+    "pk": 1,
+    "fields": {
+      "home_score": 1,
+      "away_score": 1,
+      "match": 1,
+      "user": 1,
+      "result": null
+    }
+  },
+  {
+    "model": "matches.bet",
+    "pk": 2,
+    "fields": {
+      "home_score": 2,
+      "away_score": 2,
+      "match": 1,
+      "user": 2,
+      "result": null
+    }
+  },
+  {
+    "model": "matches.bet",
+    "pk": 3,
+    "fields": {
+      "home_score": 3,
+      "away_score": 0,
+      "match": 2,
+      "user": 2,
+      "result": null
+    }
+  },
+  {
+    "model": "matches.bet",
+    "pk": 4,
+    "fields": {
+      "home_score": 4,
+      "away_score": 1,
+      "match": 3,
+      "user": 2,
+      "result": null
+    }
+  },
+  {
+    "model": "matches.bet",
+    "pk": 5,
+    "fields": {
+      "home_score": 0,
+      "away_score": 0,
+      "match": 4,
+      "user": 2,
+      "result": null
+    }
+  },
+  {
+    "model": "matches.bet",
+    "pk": 6,
+    "fields": {
+      "home_score": 1,
+      "away_score": 0,
+      "match": 4,
+      "user": 1,
+      "result": null
+    }
+  },
+  {
+    "model": "matches.bet",
+    "pk": 7,
+    "fields": {
+      "home_score": 0,
+      "away_score": 1,
+      "match": 3,
+      "user": 1,
+      "result": null
+    }
+  },
+  {
+    "model": "matches.bet",
+    "pk": 8,
+    "fields": {
+      "home_score": 1,
+      "away_score": 2,
+      "match": 2,
+      "user": 1,
+      "result": null
+    }
+  }
+]

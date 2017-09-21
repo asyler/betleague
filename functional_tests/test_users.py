@@ -1,12 +1,10 @@
-from django.contrib.auth.models import User
-
 from accounts.factories import UserFactory
 from functional_tests.base import FunctionalTest
 
 
 class UsersTest(FunctionalTest):
     def setUp(self):
-        self.user = UserFactory.create()
+        self.user = UserFactory.create(username='ugo')
         self.password = self.user.password
         self.user.set_password(self.user.password)
         self.user.save()
@@ -21,7 +19,7 @@ class UsersTest(FunctionalTest):
         login_link.click()
         # and now he sees login form.
         self.wait_for(
-            lambda : self.browser.find_element_by_id('id_username')
+            lambda: self.browser.find_element_by_id('id_username')
         )
         # He fills his credentials
         self.browser.find_element_by_id('id_username').send_keys(self.user.username)
@@ -31,3 +29,6 @@ class UsersTest(FunctionalTest):
         # and now he is redirected back to main page.
         # Now he sees logout button.
         self.wait_to_be_logged_in()
+        # and logged in as text
+        self.assertEqual(self.browser.find_element_by_css_selector('nav .navbar-text').text,
+                         f'Logged in as ugo')
