@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.test import TestCase
 
 from accounts.factories import UserFactory
@@ -6,16 +5,16 @@ from accounts.forms import LoginForm
 
 
 class LoginViewTest(TestCase):
-    def try_auth(self,correct_login=True,correct_password=True):
+    def try_auth(self, correct_login=True, correct_password=True):
         self.user = UserFactory.create()
         login = self.user.username if correct_login else 'user_not_exist'
         password = self.user.raw_password if correct_password else 'wrong_password'
 
         self.response = self.client.post('/accounts/login',
-                                    data={
-                                        'username': login,
-                                        'password': password
-                                    })
+                                         data={
+                                             'username': login,
+                                             'password': password
+                                         })
 
     def test_loads_login_form_on_GET(self):
         self.response = self.client.get('/accounts/login')

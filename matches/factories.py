@@ -1,4 +1,3 @@
-import datetime as datetime
 import factory
 from django.utils import timezone
 
@@ -14,14 +13,14 @@ class MatchFactory(factory.django.DjangoModelFactory):
 
 
 class PastMatchFactory(MatchFactory):
-    datetime = timezone.now() - timezone.timedelta(minutes=1)
+    datetime = timezone.now() - timezone.timedelta(days=1)
 
     home_score = factory.Faker('pyint')
     away_score = factory.Faker('pyint')
 
 
 class FutureMatchFactory(MatchFactory):
-    datetime = timezone.now() + timezone.timedelta(minutes=1)
+    datetime = timezone.now() + timezone.timedelta(days=1)
 
 
 class BetFactory(factory.django.DjangoModelFactory):

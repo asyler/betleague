@@ -1,11 +1,9 @@
-from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import resolve
 
 from accounts.factories import UserFactory
 from competitions.views import league
-from matches.factories import MatchFactory, BetFactory, FutureMatchFactory, PastMatchFactory
-from matches.models import Match
+from matches.factories import PastMatchFactory
 
 
 class LeaguePageTest(TestCase):
@@ -23,11 +21,9 @@ class LeaguePageTest(TestCase):
         self.assertTemplateUsed(response, 'league.html')
 
     def test_passes_matches_to_template(self):
-        matches = Match.objects.all()
         response = self.client.get('/')
         self.assertIn('matches', response.context)
 
     def test_passes_users_to_template(self):
-        users = User.objects.all()
         response = self.client.get('/')
         self.assertIn('users', response.context)
