@@ -1,20 +1,25 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% load competition_filters %}
+
+{% block extra_head %}
+    <link href="{% static 'competitions.css' %}" rel="stylesheet">
+{% endblock extra_head %}
 
 {% block body %}
     <form action="{% url 'user_bets' %}" method="POST">
         {% csrf_token %}
         <button type="submit" id="save_bets">Save</button>
+        <table id="results_table">
         {% for match in matches %}
-            <div class="row match">
-                <div class="row match-info col-fixed">
-                    <div class="col-limited date">{{ match.datetime|date:"d.m.Y" }}</div>
-                    <div class="col-limited time">{{ match.datetime|date:"H:i" }}</div>
-                    <div class="col-equal home_team">{{ match.home_team }}</div>
-                    <div class="col-equal away_team">{{ match.away_team }}</div>
-                </div>
-                <div class="col-equal bet">
+            <tr class="match">
+                <td class="date">{{ match.datetime|date:"d.m.Y" }}</td>
+                <td class="time">{{ match.datetime|date:"H:i" }}</td>
+                <td class="home_team">{{ match.home_team }}</td>
+                <td class="away_team">{{ match.away_team }}</td>
+                <td class="bet">
                     {% if match|get_property:'in_future' %}
                         <input name="match_{{ match.id }}" value="{{ match.bet|default_if_none:'' }}">
                     {% else %}
@@ -28,9 +33,10 @@
                             {% endif %}
                         {% endfor %}
                     {% endif %}
-                </div>
-            </div>
+                </td>
+            </tr>
         {% endfor %}
+        </table>
     </form>
 {% endblock %}
 
