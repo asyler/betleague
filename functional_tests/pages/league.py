@@ -7,14 +7,14 @@ class LeaguePage(object):
 
     def get_matches(self):
         return self.test.browser \
-            .find_elements_by_css_selector('div.match')
+            .find_elements_by_css_selector('tr.match')
 
     def get_match_info(self, match, field):
         return match.find_element_by_class_name(field).text
 
     def get_users(self):
         return self.test.browser \
-            .find_elements_by_css_selector('div.username')
+            .find_elements_by_css_selector('td.username')
 
     def get_user_username(self, user):
         return user.text
@@ -48,9 +48,9 @@ class LeaguePage(object):
         return self._find_bet(home_team, away_team, username, 'bet_result')
 
     def get_total_row(self):
-        return self.test.browser.find_element_by_css_selector('div#total')
+        return self.test.browser.find_element_by_css_selector('tr#total')
 
     def get_total(self, username):
         user_index = self.find_user_index(username)
         total_row = self.get_total_row()
-        return total_row.find_elements_by_css_selector('div.points')[user_index].text
+        return total_row.find_elements_by_css_selector('td.points')[user_index].text

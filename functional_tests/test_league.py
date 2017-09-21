@@ -125,3 +125,12 @@ class LeagueTableTest(FunctionalTest):
         Page = NavPage(self)
         with self.assertRaises(NoSuchElementException):
             Page.get_user_bets_link().click()
+
+    def test_12_points_are_highlighted(self):
+        # Ugo goes to main page
+        self.browser.get(self.live_server_url)
+        Page = LeaguePage(self)
+        # and see that 12 points cell is highlighted
+        bet_result = Page.find_bet_result('Bordo', 'Chelsea', 'ada')
+        self.assertEqual(bet_result.text, '12')
+        self.assertIn('highlighted',bet_result.get_attribute('class'))

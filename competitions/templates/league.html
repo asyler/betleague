@@ -2,24 +2,15 @@
 
 {% load competition_filters %}
 
-{% block body %}
-    <script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
+{% load static %}
 
-
+{% block extra_head %}
+    <link href="{% static 'competitions.css' %}" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/2.0.3/jquery.floatThead.min.js"></script>
-    <script>
-    $(document).ready(function () {
-        $('table#results_table').floatThead({
-	position: 'fixed',
-    top: 52,
-    floatTableClass: 'results_table_float'
-});
-    });
+    <script src="{% static 'float_thead.js' %}"></script>
+{% endblock extra_head %}
 
-    </script>
+{% block body %}
     <table id="results_table">
         <thead>
             <tr id="users">
