@@ -2,40 +2,53 @@
 
 {% load competition_filters %}
 
+{% load static %}
+
+{% block extra_head %}
+    <link href="{% static 'competitions.css' %}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/floatthead/2.0.3/jquery.floatThead.min.js"></script>
+    <script src="{% static 'float_thead.js' %}"></script>
+{% endblock extra_head %}
+
 {% block body %}
-    <div class="container-fluid" id="results_table">
-        <div class="row" id="users">
-            <div class="col-fixed"></div>
-            {% for user in users %}
-                <div class="col-equal username">{{ user.username }}</div>
-            {% endfor %}
-        </div>
-        <div class="row" id="total">
-            <div class="col-fixed"></div>
-            {% for user in users %}
-                <div class="col-equal points">{{ user.total_points }}</div>
-            {% endfor %}
-        </div>
-        {% for match in matches.values %}
-            <div class="row match">
-                <div class="row match-info col-fixed">
-                    <div class="col-limited date">{{ match.datetime|date:"d.m.Y" }}</div>
-                    <div class="col-limited time">{{ match.datetime|date:"H:i" }}</div>
-                    <div class="col-equal home_team">{{ match.home_team }}</div>
-                    <div class="col-equal away_team">{{ match.away_team }}</div>
-                </div>
+    <table id="results_table">
+        <thead>
+            <tr id="users">
+                <td class="colspan" colspan="4"></td>
                 {% for user in users %}
-                    {% if match.has_result %}
-                        <div class="col-equal bet_result">
-                            {{ match.bets|get_item:user.pk|get_property:'result'|default_if_none:'' }}
-                        </div>
-                    {% else %}
-                        <div class="col-equal bet">
-                            {{ match.bets|get_item:user.pk|default_if_none:'' }}
-                        </div>
-                    {% endif %}
+                    <td class="username">{{ user.username }}</td>
                 {% endfor %}
-            </div>
-        {% endfor %}
-    </div>
+            </tr>
+            <tr id="total">
+                <td class="colspan" colspan="4"></td>
+                {% for user in users %}
+                    <td class="points">{{ user.total_points }}</td>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for match in matches.values %}
+                <tr class="match">
+                    <td class="date">{{ match.datetime|date:"d.m.Y" }}</td>
+                    <td class="time">{{ match.datetime|date:"H:i" }}</td>
+                    <td class="home_team">{{ match.home_team }}</td>
+                    <td class="away_team">{{ match.away_team }}</td>
+                    {% for user in users %}
+                        {% if match.has_result %}
+                            {% with match.bets|get_item:user.pk|get_property:'result'|default_if_none:'' as result %}
+                            <td class="bet_result {% if result == 12 %}highlighted{% endif %}">
+                                {{ result }}
+                            </td>
+                            {% endwith %}
+                        {% else %}
+                            <td class="bet">
+                                {{ match.bets|get_item:user.pk|default_if_none:'' }}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}

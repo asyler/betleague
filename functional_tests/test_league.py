@@ -23,7 +23,7 @@ class LeagueTableTest(FunctionalTest):
         self.future_match = FutureMatchFactory.create(home_team='Ajax', away_team='Barcelona',
                                                       datetime="2017-01-09 05:04+00:00")
         self.past_match = PastMatchFactory.create(home_team='Bordo', away_team='Chelsea')
-        self.past_match2 = PastMatchFactory.create()
+        self.past_match2 = PastMatchFactory.create(home_team='Bordo', away_team='Ajax')
         self.past_match3 = PastMatchFactory.create(home_team='Chelsea', away_team='Ajax',
                                                    home_score=None, away_score=None)
 
@@ -125,3 +125,16 @@ class LeagueTableTest(FunctionalTest):
         Page = NavPage(self)
         with self.assertRaises(NoSuchElementException):
             Page.get_user_bets_link().click()
+
+    def test_12_points_are_highlighted(self):
+        # Ugo goes to main page
+        self.browser.get(self.live_server_url)
+        Page = LeaguePage(self)
+        # and see that 12 points cell is highlighted
+        bet_result = Page.find_bet_result('Bordo', 'Chelsea', 'ada')
+        self.assertEqual(bet_result.text, '12')
+        self.assertIn('highlighted',bet_result.get_attribute('class'))
+        # and not 12 - not highlighted
+        bet_result = Page.find_bet_result('Bordo', 'Ajax', 'ugo')
+        self.assertNotEqual(bet_result.text, '12')
+        self.assertNotIn('highlighted', bet_result.get_attribute('class'))

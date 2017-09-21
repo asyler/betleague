@@ -1,44 +1,32 @@
-.row {
-    margin: 0;
-    display: flex;
-}
-
-.col-limited {
-    flex: 0 1;
-    white-space: nowrap;
-}
-
-.col-equal {
-    flex: 1 1;
-}
-
-.row#users {
+td.username {
     font-weight: bold;
 }
 
-.col-fixed {
-    width: 400px;
-}
-
-.row.match:nth-child(odd) {
+tr.match:nth-child(odd) {
     background-color: #f8f8f8;
 }
 
-.row#total {
+tr#total {
     border-bottom: 1px solid #aaa;
 }
 
-.col-equal.bet_result, .col-equal.bet, .col-equal.username, .col-equal.points {
+td.bet_result, td.bet, td.username, td.points {
     text-align: center;
     border-left: 1px solid #aaa;
     padding: 5px;
+    width: 1px;
 }
 
-.row.match-info > div:not(:first-child) {
+td.colspan, td.date, td.time, td.home_team, td.away_team {
+    width: 1%;
+    white-space: nowrap;
+}
+
+tr.match > td:not(:first-child) {
     border-left: 1px solid #aaa;
 }
 
-.row.match-info > div {
+tr.match > td {
     padding: 5px 10px;
 }
 
@@ -48,7 +36,26 @@
     margin: 15px;
 }
 
-.row.match:not(:last-child) {
+tr.match {
     border-bottom: 1px solid #ccc;
 }
 
+.navbar {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    height: 52px;
+    width: 100%;
+}
+
+#results_table {
+    margin-top: 60px;
+}
+
+.results_table_float > thead, #results_table > thead {
+    background: lightgreen;
+}
+
+.bet_result.highlighted {
+    background: lawngreen;
+}
