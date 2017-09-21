@@ -35,9 +35,11 @@
                     <td class="away_team">{{ match.away_team }}</td>
                     {% for user in users %}
                         {% if match.has_result %}
-                            <td class="bet_result">
-                                {{ match.bets|get_item:user.pk|get_property:'result'|default_if_none:'' }}
+                            {% with match.bets|get_item:user.pk|get_property:'result'|default_if_none:'' as result %}
+                            <td class="bet_result {% if result == 12 %}highlighted{% endif %}">
+                                {{ result }}
                             </td>
+                            {% endwith %}
                         {% else %}
                             <td class="bet">
                                 {{ match.bets|get_item:user.pk|default_if_none:'' }}

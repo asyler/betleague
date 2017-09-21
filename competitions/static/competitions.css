@@ -55,3 +55,7 @@ tr.match {
 .results_table_float > thead, #results_table > thead {
     background: lightgreen;
 }
+
+.bet_result.highlighted {
+    background: lawngreen;
+}
