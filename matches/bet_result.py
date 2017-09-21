@@ -10,7 +10,7 @@ def calc_result(home, away):
 def calc_bet_result(home_score, away_score, home_bet, away_bet):
     if home_score == home_bet and away_score == away_bet:
         score = 12
-    elif home_score-away_score == home_bet-away_bet:
+    elif home_score - away_score == home_bet - away_bet:
         score = 6
     else:
         score = 0
@@ -20,7 +20,7 @@ def calc_bet_result(home_score, away_score, home_bet, away_bet):
 
         if match_result == bet_result:
             score += 3
-        if home_score+away_score == home_bet+away_bet and home_score+away_score >= 4:
+        if home_score + away_score == home_bet + away_bet and home_score + away_score >= 4:
             score += 2
         if home_score == home_bet or away_score == away_bet:
             score += 2

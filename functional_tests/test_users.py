@@ -1,5 +1,3 @@
-from django.contrib.auth.models import User
-
 from accounts.factories import UserFactory
 from functional_tests.base import FunctionalTest
 
@@ -21,7 +19,7 @@ class UsersTest(FunctionalTest):
         login_link.click()
         # and now he sees login form.
         self.wait_for(
-            lambda : self.browser.find_element_by_id('id_username')
+            lambda: self.browser.find_element_by_id('id_username')
         )
         # He fills his credentials
         self.browser.find_element_by_id('id_username').send_keys(self.user.username)

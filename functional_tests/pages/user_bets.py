@@ -1,7 +1,7 @@
 class UserBetsPage(object):
     def __init__(self, test):
         self.test = test
-        self.url = self.test.live_server_url+'/my_bets'
+        self.url = self.test.live_server_url + '/my_bets'
 
     def go(self):
         self.test.browser.get(self.url)

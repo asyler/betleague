@@ -1,12 +1,16 @@
 import re
+
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
-
 # Create your models here.
 from django.utils import timezone
 
 from . import bet_result
+
+PAST_MATCH_ERROR = 'Can\'t bet for past match'
+WRONG_BET_FORMAT_ERROR = 'Wrong bet format'
+
 
 class Match(models.Model):
     home_team = models.TextField()
@@ -17,7 +21,6 @@ class Match(models.Model):
 
     @property
     def in_future(self):
-        print(self.home_team,self.datetime,timezone.now())
         return self.datetime > timezone.now()
 
     @property
@@ -32,10 +35,12 @@ class Match(models.Model):
 
             [b.set_result() for b in self.bet_set.all()]
 
+
 def validate_match_datetime(value):
     match = Match.objects.get(pk=value)
     if not match.in_future:
         raise ValidationError('Match is in future')
+
 
 class Bet(models.Model):
     home_score = models.IntegerField()
@@ -57,9 +62,11 @@ class Bet(models.Model):
         return '{} - {}'.format(self.home_score, self.away_score)
 
     def set_bet(self, result):
-         match = re.match(r'\s*(\d+)\s*[-:]\s*(\d+)\s*', result)
-         if match:
-             self.home_score = int(match.group(1))
-             self.away_score = int(match.group(2))
-         else:
-             raise ValidationError('Wrong bet format')
+        match = re.match(r'\s*(\d+)\s*[-:]\s*(\d+)\s*', result)
+        if not self.match.in_future:
+            raise ValidationError(PAST_MATCH_ERROR)
+        elif match:
+            self.home_score = int(match.group(1))
+            self.away_score = int(match.group(2))
+        else:
+            raise ValidationError(WRONG_BET_FORMAT_ERROR)

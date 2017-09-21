@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from competitions.views import league
 
 import accounts.urls as accounts_urls
 import matches.views as matches_views
+from competitions.views import league
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

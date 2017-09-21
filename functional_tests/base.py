@@ -2,7 +2,6 @@ import os
 import time
 from datetime import datetime
 
-import sys
 from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
@@ -26,6 +25,7 @@ def wait(fn):
                 if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(0.1)
+
     return modified_fn
 
 
@@ -79,14 +79,14 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     def create_pre_authenticated_session(self, username):
         session_key, user = create_pre_authenticated_session(username)
-        ## to set a cookie we need to first visit the domain.
-        ## 404 pages load the quickest!
+        # to set a cookie we need to first visit the domain.
+        # 404 pages load the quickest!
         self.browser.get(self.live_server_url + "/404_no_such_url/")
 
         cookies = dict(
             name=settings.SESSION_COOKIE_NAME,
             value=session_key,
-            #secure=False,
+            # secure=False,
             path='/',
         )
 

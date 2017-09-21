@@ -3,23 +3,26 @@
 {% load competition_filters %}
 
 {% block body %}
-    <button id="save_bets">Save</button>
-    {% for match in matches %}
-                <div class="row match">
-                    <div class="row match-info col-fixed">
-                        <div class="col-limited date">{{ match.datetime|date:"d.m.Y"  }}</div>
-                        <div class="col-limited time">{{ match.datetime|date:"H:i" }}</div>
-                        <div class="col-equal home_team">{{ match.home_team }}</div>
-                        <div class="col-equal away_team">{{ match.away_team }}</div>
-                    </div>
-                        <div class="col-equal bet">
-                            {% if match|get_property:'in_future' %}
-                                <input value="{{ match.bet|default_if_none:'' }}">
-                            {% else %}
-                                {{ match.bet|default_if_none:'' }}
-                            {% endif %}
-                        </div>
+    <form action="{% url 'user_bets' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" id="save_bets">Save</button>
+        {% for match in matches %}
+            <div class="row match">
+                <div class="row match-info col-fixed">
+                    <div class="col-limited date">{{ match.datetime|date:"d.m.Y" }}</div>
+                    <div class="col-limited time">{{ match.datetime|date:"H:i" }}</div>
+                    <div class="col-equal home_team">{{ match.home_team }}</div>
+                    <div class="col-equal away_team">{{ match.away_team }}</div>
                 </div>
-            {% endfor %}
+                <div class="col-equal bet">
+                    {% if match|get_property:'in_future' %}
+                        <input name="match_{{ match.id }}" value="{{ match.bet|default_if_none:'' }}">
+                    {% else %}
+                        {{ match.bet|default_if_none:'' }}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </form>
 {% endblock %}
 

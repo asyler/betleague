@@ -1,7 +1,5 @@
 from unittest import skip
 
-from selenium.common.exceptions import NoSuchElementException
-
 from functional_tests.base import FunctionalTest
 from functional_tests.pages.league import LeaguePage
 from functional_tests.pages.nav import NavPage
@@ -51,9 +49,9 @@ class UserBetsTest(FunctionalTest):
         # He sees 2 past matches for now
         matches = Page.get_matches()
         # For both of them he sees his bet
-        self.assertEqual(Page.get_match_body(matches[2]),'2 - 1')
+        self.assertEqual(Page.get_match_body(matches[2]), '2 - 1')
         # and no input
-        self.assertNotIn('input',Page.get_match_body(matches[1]))
+        self.assertNotIn('input', Page.get_match_body(matches[1]))
 
     def test_future_matches_can_be_bet(self):
         Page = UserBetsPage(self)
@@ -70,11 +68,16 @@ class UserBetsTest(FunctionalTest):
         # and presses Save button
         Page.press_save_button()
         # Page reloads and now he sees same field with his new bet
-        self.wait_for(lambda: self.assertEqual(Page.get_match_body(Page.get_matches()[0]), '3 - 1'))
+        self.wait_for(
+            lambda: self.assertEqual(Page.get_match_input(Page.get_matches()[0]).get_attribute('value'), '3 - 1'))
         # Now he goes to main league page
         self.browser.get(self.live_server_url)
         # and see same bet from him on the same match
-        leaguePage = LeaguePage(self)
-        matches = leaguePage.get_matches()
-        bet = leaguePage.find_bet('Ajax', 'Barcelona', 'ugo')
+        league_page = LeaguePage(self)
+        matches = league_page.get_matches()
+        bet = league_page.find_bet('Ajax', 'Barcelona', 'ugo')
         self.assertEqual(bet.text, '3 - 1')
+
+    @skip
+    def test_invalid_bets_results_to_errors(self):
+        self.fail()
