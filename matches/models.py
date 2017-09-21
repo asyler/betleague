@@ -12,6 +12,16 @@ PAST_MATCH_ERROR = 'Can\'t bet for past match'
 WRONG_BET_FORMAT_ERROR = 'Wrong bet format'
 
 
+def parse_score(score):
+    match = re.match(r'\s*(\d+)\s*[-:]\s*(\d+)\s*', score)
+    if not match:
+        return None
+
+    home_score = int(match.group(1))
+    away_score = int(match.group(2))
+    return home_score, away_score
+
+
 class Match(models.Model):
     home_team = models.TextField()
     away_team = models.TextField()
@@ -64,11 +74,12 @@ class Bet(models.Model):
         return '{} - {}'.format(self.home_score, self.away_score)
 
     def set_bet(self, result):
-        match = re.match(r'\s*(\d+)\s*[-:]\s*(\d+)\s*', result)
         if not self.match.in_future:
             raise ValidationError(PAST_MATCH_ERROR)
-        elif match:
-            self.home_score = int(match.group(1))
-            self.away_score = int(match.group(2))
+
+        bet = parse_score(result)
+        if bet:
+            self.home_score = bet[0]
+            self.away_score = bet[1]
         else:
             raise ValidationError(WRONG_BET_FORMAT_ERROR)
