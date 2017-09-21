@@ -18,3 +18,6 @@ class UserBetsPage(object):
 
     def press_save_button(self):
         self.test.browser.find_element_by_id('save_bets').click()
+
+    def get_match_error(self, match):
+        return match.find_element_by_css_selector('div.error').text

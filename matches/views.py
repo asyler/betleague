@@ -13,7 +13,6 @@ from matches.models import Match, Bet
 @login_required
 def user_bets(request):
     if request.method == 'POST':
-        errors = {}
         for match, result in request.POST.items():
             _match = re.match(r'match_(\d+)', match)
             if _match:
@@ -26,8 +25,7 @@ def user_bets(request):
                     bet.set_bet(result)
                     bet.save()
                 except ValidationError as e:
-                    errors[f'match_{match_id}'] = e
-                    messages.error(request, e)
+                    messages.error(request, e.message, extra_tags=match_id)
         return redirect('user_bets')
 
     matches = Match.objects.filter(Q(bet__user=request.user.pk) | Q(bet__user=None)).all() \

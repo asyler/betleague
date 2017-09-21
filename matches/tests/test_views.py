@@ -39,6 +39,16 @@ class UserBetsPageTest(TestCase):
         bet = Bet.objects.filter(user=self.user, match=self.future_match1).first()
         self.assertEqual(str(bet), '2 - 0')
 
+    def test_POST_edit_bets(self):
+        self.client.post(self.url, data={
+            'match_1': '2 - 0'
+        })
+        self.client.post(self.url, data={
+            'match_1': '3 - 0'
+        })
+        bet = Bet.objects.filter(user=self.user, match=self.future_match1).first()
+        self.assertEqual(str(bet), '3 - 0')
+
     def test_for_invalid_input_invalid_input_not_saves(self):
         self.client.post(self.url, data={
             'match_1': '2 0'

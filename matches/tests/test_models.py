@@ -98,8 +98,12 @@ class BetModelTest(TestCase):
             bet.full_clean()
 
     def test_has_string_representation(self):
-        bet = BetFactory.create(home_score=2, away_score=1, match=self.past_match, user=self.user)
-        self.assertEqual(str(bet), '2 - 1')
+        bet = BetFactory(home_score=0, away_score=1, match=self.past_match, user=self.user)
+        self.assertEqual(str(bet), '0 - 1')
+
+    def test_empty_bet_has_string_representation(self):
+        bet = Bet(match=self.past_match, user=self.user)
+        self.assertEqual(str(bet), '')
 
     def test_result_field_can_be_black(self):
         bet = BetFactory.create(home_score=2, away_score=1, match=self.past_match, user=self.user)

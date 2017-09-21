@@ -20,6 +20,14 @@
                     {% else %}
                         {{ match.bet|default_if_none:'' }}
                     {% endif %}
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.extra_tags == match.id|stringformat:"s" %}
+                                <div class="{{ message.tags }}">{{ message | safe }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}

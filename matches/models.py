@@ -59,6 +59,8 @@ class Bet(models.Model):
         self.save()
 
     def __str__(self):
+        if self.home_score is None:
+            return ''
         return '{} - {}'.format(self.home_score, self.away_score)
 
     def set_bet(self, result):
