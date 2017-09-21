@@ -6,3 +6,4 @@ functional_tests/screendumps
 /geckodriver.log
 /debug.log
 /data.json
+*.csv
