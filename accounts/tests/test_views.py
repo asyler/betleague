@@ -1,7 +1,8 @@
+from django.contrib.auth.forms import AuthenticationForm
 from django.test import TestCase
 
 from accounts.factories import UserFactory
-from accounts.forms import LoginForm
+
 
 
 class LoginViewTest(TestCase):
@@ -18,7 +19,7 @@ class LoginViewTest(TestCase):
 
     def test_loads_login_form_on_GET(self):
         self.response = self.client.get('/accounts/login')
-        self.assertIs(self.response.context['form'], LoginForm)
+        self.assertIsInstance(self.response.context['form'], AuthenticationForm)
 
     def test_authenticate_user_if_exist(self):
         self.try_auth()
@@ -36,10 +37,10 @@ class LoginViewTest(TestCase):
         self.try_auth()
         self.assertRedirects(self.response, '/')
 
-    def test_redirects_to_login_page_if_wrong_pass(self):
+    def test_returns_to_login_page_if_wrong_pass(self):
         self.try_auth(correct_login=False)
-        self.assertRedirects(self.response, '/accounts/login')
+        self.assertEqual(self.response.status_code, 200)
 
-    def test_redirects_to_login_page_if_not_exist(self):
+    def test_returns_to_login_page_if_not_exist(self):
         self.try_auth(correct_password=False)
-        self.assertRedirects(self.response, '/accounts/login')
+        self.assertEqual(self.response.status_code, 200)

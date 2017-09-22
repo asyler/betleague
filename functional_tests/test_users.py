@@ -25,7 +25,7 @@ class UsersTest(FunctionalTest):
         self.browser.find_element_by_id('id_username').send_keys(self.user.username)
         self.browser.find_element_by_id('id_password').send_keys(self.password)
         # and presses the only button
-        self.browser.find_element_by_tag_name('button').click()
+        self.browser.find_element_by_css_selector('input[type="submit"]').click()
         # and now he is redirected back to main page.
         # Now he sees logout button.
         self.wait_to_be_logged_in()

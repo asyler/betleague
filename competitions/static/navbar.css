@@ -1,0 +1,11 @@
+nav a, nav li {
+    font-size: 14px;
+}
+
+nav li {
+    padding: 0;
+}
+
+nav {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

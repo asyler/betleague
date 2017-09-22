@@ -7,16 +7,16 @@
     <title>Betleague</title>
 
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
     <script
       src="https://code.jquery.com/jquery-3.2.1.min.js"
       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
       crossorigin="anonymous"></script>
 
     {% block extra_head %}{% endblock extra_head %}
+    <link href="{% static 'navbar.css' %}" rel="stylesheet">
 </head>
-<body>
-<nav class="navbar navbar-default" role="navigation">
+<body class="{% block bodyclass %}{% endblock %}">
+    <nav class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Betleague</a>
 
@@ -40,7 +40,7 @@
             {% endif %}
         </ul>
     </div>
-</nav>
+    </nav>
 
 <div id="wrapper">
     {% block body %}
