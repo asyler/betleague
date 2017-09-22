@@ -154,3 +154,10 @@ class MatchesTableTest(FunctionalTest):
         self.assertFalse(Page.switcher_is_on())
         bet = Page.find_bet('Bordo', 'Chelsea', 'ada')
         self.assertEqual(bet.text, '2 - 0')
+
+    def test_page_shows_results_col(self):
+        # Ugo goes to main page
+        self.browser.get(self.live_server_url)
+        Page = MatchesPage(self)
+        # and see results for past_matches
+        self.assertEqual(Page.get_result('Bordo','Chelsea'), '2 - 0')

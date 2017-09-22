@@ -6,11 +6,11 @@ tr.match:nth-child(odd) {
     background-color: #f8f8f8;
 }
 
-tr#total {
+tr#total, tr#users .result {
     border-bottom: 1px solid #aaa;
 }
 
-td.bet_result, td.bet, td.username, td.points {
+td.bet_result, td.bet, td.username, td.points, td.result {
     text-align: center;
     border-left: 1px solid #aaa;
     padding: 5px;
@@ -21,13 +21,10 @@ td.bet_result, td.bet, td.username, td.points {
 #results_table td.date,
 #results_table td.time,
 #results_table td.home_team,
-#results_table td.away_team {
+#results_table td.away_team
+{
     width: 1%;
     white-space: nowrap;
-}
-
-tr.match > td:not(:first-child) {
-    border-left: 1px solid #aaa;
 }
 
 tr.match > td {

@@ -28,7 +28,7 @@ class MatchesPage(object):
         user_index = users.index(user)
         return user_index
 
-    def _find_bet(self, home_team, away_team, username, class_name):
+    def find_match(self, home_team, away_team):
         matches = self.get_matches()
 
         match = next((
@@ -36,6 +36,10 @@ class MatchesPage(object):
             self.get_match_info(x, 'home_team') == home_team and
             self.get_match_info(x, 'away_team') == away_team
         ))
+        return match
+
+    def _find_bet(self, home_team, away_team, username, class_name):
+        match = self.find_match(home_team, away_team)
 
         user_index = self.find_user_index(username)
         bet = match.find_elements_by_class_name(class_name)[user_index]
@@ -63,3 +67,9 @@ class MatchesPage(object):
 
     def switcher_click(self):
         self.test.browser.find_element_by_css_selector('.toggle.btn').click()
+
+    def get_result(self, home_team, away_team):
+        match = self.find_match( home_team, away_team)
+        return match.find_element_by_class_name('result').text
+
+

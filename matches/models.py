@@ -47,6 +47,11 @@ class Match(models.Model):
 
             [b.set_result() for b in self.bet_set.all()]
 
+    def __str__(self):
+        if self.home_score is None:
+            return ''
+        return '{} - {}'.format(self.home_score, self.away_score)
+
 
 def validate_match_datetime(value):
     match = Match.objects.get(pk=value)

@@ -61,6 +61,14 @@ class MatchModelTest(TestCase):
         match = FutureMatchFactory.create()
         self.assertFalse(match.has_result)
 
+    def test_has_string_representation(self):
+        match = PastMatchFactory(home_score=0, away_score=1)
+        self.assertEqual(str(match), '0 - 1')
+
+    def test_match_without_result_has_empty_string_representation(self):
+        match = PastMatchFactory(home_score=None, away_score=None)
+        self.assertEqual(str(match), '')
+
 
 class BetModelTest(TestCase):
     @classmethod

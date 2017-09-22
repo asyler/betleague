@@ -26,6 +26,7 @@
                 {% for user in users %}
                     <td class="username">{{ user.username }}</td>
                 {% endfor %}
+                <td rowspan="2" class="result">Result</td>
             </tr>
             <tr id="total">
                 <td class="colspan" colspan="4"></td>
@@ -53,6 +54,7 @@
                             {{ match.bets|get_item:user.pk|default_if_none:'' }}
                         </td>
                     {% endfor %}
+                    <td class="result">{{ match }}</td>
                 </tr>
             {% endfor %}
         </tbody>
