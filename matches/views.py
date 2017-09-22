@@ -7,7 +7,7 @@ from django.db.models import Q, F
 from django.shortcuts import render, redirect
 
 # Create your views here.
-from matches.models import Match, Bet
+from matches.models import Match, Bet, EmptyBet
 
 
 @login_required
@@ -26,6 +26,8 @@ def user_bets(request):
                     bet.save()
                 except ValidationError as e:
                     messages.error(request, e.message, extra_tags=match_id)
+                except EmptyBet:
+                    pass
         return redirect('user_bets')
 
     matches = Match.objects.filter(Q(bet__user=request.user.pk) | Q(bet__user=None)).all() \

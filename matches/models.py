@@ -11,6 +11,8 @@ from . import bet_result
 PAST_MATCH_ERROR = 'Can\'t bet for past match'
 WRONG_BET_FORMAT_ERROR = 'Wrong bet format'
 
+class EmptyBet(Exception):
+     pass
 
 def parse_score(score):
     match = re.match(r'\s*(\d+)\s*[-:]\s*(\d+)\s*', score)
@@ -76,6 +78,9 @@ class Bet(models.Model):
     def set_bet(self, result):
         if not self.match.in_future:
             raise ValidationError(PAST_MATCH_ERROR)
+
+        if result=='':
+            raise EmptyBet
 
         bet = parse_score(result)
         if bet:
