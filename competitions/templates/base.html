@@ -21,6 +21,7 @@
         <a class="navbar-brand" href="/">Betleague</a>
 
         <ul class="nav navbar-nav navbar-left">
+            <li class="navbar-link"><a href="{% url 'matches' %}">Matches</a></li>
             {% if user.is_authenticated %}
                 <li class="navbar-link"><a href="{% url 'user_bets' %}">My bets</a></li>
             {% endif %}
