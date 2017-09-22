@@ -21,3 +21,6 @@ class UserBetsPage(object):
 
     def get_match_error(self, match):
         return match.find_element_by_css_selector('div.error').text
+
+    def get_alert_success(self):
+        return self.test.browser.find_element_by_css_selector('.alert-success')

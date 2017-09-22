@@ -109,3 +109,14 @@ class UserBetsTest(FunctionalTest):
         self.assertEqual(Page.get_match_input(Page.get_matches()[1]).get_attribute('value'), '')
         # and error near it
         self.assertEqual(Page.get_match_error(Page.get_matches()[1]), WRONG_BET_FORMAT_ERROR)
+
+    def test_after_save_alert_shown(self):
+        Page = UserBetsPage(self)
+        # Ugo goes to My bets page
+        Page.go()
+        # and presses Save button
+        Page.press_save_button()
+        # Page reloads and now he sees alter about saving
+        self.wait_for(
+            lambda: self.assertEqual(Page.get_alert_success().text, 'Saved'))
+        self.assertTrue(Page.get_alert_success().is_displayed())

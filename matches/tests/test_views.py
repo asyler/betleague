@@ -96,7 +96,7 @@ class UserBetsPageTest(TestCase):
         }, follow=True)
         bet = Bet.objects.filter(user=self.user, match=self.future_match1).first()
         self.assertEqual(bet, None)
-        self.assertEqual(0, len(response.context.get('messages')))
+        self.assertEqual(1, len(response.context.get('messages'))) # one for saved successful
 
 
 class UserBetsPageUnauthorized(TestCase):
