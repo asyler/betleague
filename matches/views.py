@@ -28,6 +28,7 @@ def user_bets(request):
                     messages.error(request, e.message, extra_tags=match_id)
                 except EmptyBet:
                     pass
+        messages.success(request, 'Saved', extra_tags='saved')
         return redirect('user_bets')
 
     matches = Match.objects.filter(Q(bet__user=request.user.pk) | Q(bet__user=None)).all() \

@@ -17,7 +17,11 @@ td.bet_result, td.bet, td.username, td.points {
     width: 1px;
 }
 
-td.colspan, td.date, td.time, td.home_team, td.away_team {
+#results_table td.colspan,
+#results_table td.date,
+#results_table td.time,
+#results_table td.home_team,
+#results_table td.away_team {
     width: 1%;
     white-space: nowrap;
 }
@@ -30,7 +34,7 @@ tr.match > td {
     padding: 5px 10px;
 }
 
-#results_table {
+#results_table, #bets_table {
     border: 1px solid #aaa;
     padding: 0;
     margin: 15px;
@@ -58,4 +62,28 @@ tr.match {
 
 .bet_result.highlighted {
     background: lawngreen;
+}
+
+.bet > input {
+    text-align: center;
+}
+
+.navbar > div {
+    text-align: center;
+}
+
+#save_bets {
+    margin-top: 10px;
+}
+
+#bets_table {
+    margin: auto;
+}
+
+.saved_alert {
+    float: right;
+    position: fixed;
+    right: 0;
+    margin-right: 50px;
+    padding: 10px 40px;
 }

@@ -25,6 +25,10 @@
                 <li class="navbar-link"><a href="{% url 'user_bets' %}">My bets</a></li>
             {% endif %}
         </ul>
+
+
+        {% block extra_nav %}{% endblock %}
+
         <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
                 <li class="navbar-text">Logged in as {{ user.username }}</li>

@@ -6,13 +6,25 @@
 
 {% block extra_head %}
     <link href="{% static 'competitions.css' %}" rel="stylesheet">
+    <script src="{% static 'user_bets.js' %}"></script>
 {% endblock extra_head %}
 
+{% block extra_nav %}
+    <button type="button" class="btn btn-sm btn-success" id="save_bets">Save</button>
+{% endblock extra_nav %}
+
 {% block body %}
+    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.extra_tags == 'saved' %}
+                                <div class="saved_alert alert alert-success {{ message.tags }}">{{ message }}</div>
+                            {% endif %}
+                        {% endfor %}
+    {% endif %}
+
     <form action="{% url 'user_bets' %}" method="POST">
         {% csrf_token %}
-        <button type="submit" id="save_bets">Save</button>
-        <table id="results_table">
+        <table id="bets_table">
         {% for match in matches %}
             <tr class="match">
                 <td class="date">{{ match.datetime|date:"d.m.Y" }}</td>
@@ -29,7 +41,7 @@
                     {% if messages %}
                         {% for message in messages %}
                             {% if message.extra_tags == match.id|stringformat:"s" %}
-                                <div class="{{ message.tags }}">{{ message | safe }}</div>
+                                <div class="{{ message.tags }}">{{ message }}</div>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
