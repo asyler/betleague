@@ -1,5 +1,7 @@
 from unittest import skip
 
+from django.urls import reverse
+
 from functional_tests.base import FunctionalTest
 from functional_tests.pages.matches import MatchesPage
 from functional_tests.pages.nav import NavPage
@@ -78,7 +80,7 @@ class UserBetsTest(FunctionalTest):
         self.wait_for(
             lambda: self.assertEqual(Page.get_match_input(Page.get_matches()[0]).get_attribute('value'), '3 - 1'))
         # Now he goes to main league page
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.live_server_url+reverse('matches'))
         # and see same bets from him on the same matches
         league_page = MatchesPage(self)
         matches = league_page.get_matches()

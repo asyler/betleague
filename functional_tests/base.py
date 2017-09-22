@@ -7,7 +7,9 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 
+from accounts.factories import UserFactory
 from functional_tests.management.commands.create_session import create_pre_authenticated_session
+from matches.factories import FutureMatchFactory, PastMatchFactory, BetFactory
 
 MAX_WAIT = 10
 SCREEN_DUMP_LOCATION = os.path.join(
@@ -30,8 +32,11 @@ def wait(fn):
 
 
 class FunctionalTest(StaticLiveServerTestCase):
-    def setUp(self):
+    def setUp(self, set_up_data = False):
         self.browser = webdriver.Firefox()
+
+        if set_up_data:
+            self.setUpData()
 
     def tearDown(self):
         if self._test_has_failed():
@@ -93,3 +98,37 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser.add_cookie(cookies)
 
         return user
+
+    def setUpData(self):
+        self.future_match = FutureMatchFactory.create(home_team='Ajax', away_team='Barcelona',
+                                                      datetime="2017-01-09 05:04+00:00")
+        self.past_match = PastMatchFactory.create(home_team='Bordo', away_team='Chelsea')
+        self.past_match2 = PastMatchFactory.create(home_team='Bordo', away_team='Ajax')
+        self.past_match3 = PastMatchFactory.create(home_team='Chelsea', away_team='Ajax',
+                                                   home_score=None, away_score=None)
+
+        self.user1 = UserFactory.create(username='ugo')
+        self.user2 = UserFactory.create(username='ada')
+
+        self.bets = [
+            [
+                BetFactory.create(match=self.future_match, user=self.user1, home_score=2, away_score=1),
+                BetFactory.create(match=self.future_match, user=self.user2, home_score=4, away_score=0),
+            ],  # future match
+            [
+                None,
+                BetFactory.create(match=self.past_match, user=self.user2, home_score=2, away_score=0),
+            ],  # past match
+            [
+                BetFactory.create(match=self.past_match2, user=self.user1, home_score=1, away_score=3),
+                BetFactory.create(match=self.past_match2, user=self.user2, home_score=0, away_score=0),
+            ],
+            [
+                None,
+                BetFactory.create(match=self.past_match3, user=self.user2, home_score=0, away_score=0),
+            ]
+        ]
+
+        self.past_match.set_score(home_score=2, away_score=0)
+        self.past_match2.set_score(home_score=0, away_score=0)
+

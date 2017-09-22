@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+    <link href="{% static 'league.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <table id="league">
+        <thead>
+            <tr>
+                <td>#</td>
+                <td class="username">Username</td>
+                <td>Points</td>
+                <td>Matches bet</td>
+                <td>12</td>
+            </tr>
+        </thead>
+        {% for user in users %}
+            <tr class="user">
+                <td class="position">{{ forloop.counter }}</td>
+                <td class="username">{{ user.username }}</td>
+                <td class="points">{{ user.points }}</td>
+                <td class="matches_bet">{{ user.matches_bet }}</td>
+                <td class="guess_hits">{{ user.guess_hits }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+

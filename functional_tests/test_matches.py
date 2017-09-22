@@ -1,3 +1,4 @@
+from django.urls import reverse
 from selenium.common.exceptions import NoSuchElementException
 
 from accounts.factories import UserFactory
@@ -10,7 +11,7 @@ from matches.factories import FutureMatchFactory, PastMatchFactory, BetFactory
 class SmokeTest(FunctionalTest):
     def test_home_page_smoke(self):
         # Ugo goes to main page and see
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.live_server_url+reverse('matches'))
         # in header: Betleague
         self.assertEqual(self.browser.title, 'Betleague')
         # and table in body:
@@ -20,43 +21,13 @@ class SmokeTest(FunctionalTest):
 
 class MatchesTableTest(FunctionalTest):
     def setUp(self):
-        self.future_match = FutureMatchFactory.create(home_team='Ajax', away_team='Barcelona',
-                                                      datetime="2017-01-09 05:04+00:00")
-        self.past_match = PastMatchFactory.create(home_team='Bordo', away_team='Chelsea')
-        self.past_match2 = PastMatchFactory.create(home_team='Bordo', away_team='Ajax')
-        self.past_match3 = PastMatchFactory.create(home_team='Chelsea', away_team='Ajax',
-                                                   home_score=None, away_score=None)
+        self.url = self.live_server_url+reverse('matches')
 
-        self.user1 = UserFactory.create(username='ugo')
-        self.user2 = UserFactory.create(username='ada')
-
-        self.bets = [
-            [
-                BetFactory.create(match=self.future_match, user=self.user1, home_score=2, away_score=1),
-                BetFactory.create(match=self.future_match, user=self.user2, home_score=4, away_score=0),
-            ],  # future match
-            [
-                None,
-                BetFactory.create(match=self.past_match, user=self.user2, home_score=2, away_score=0),
-            ],  # past match
-            [
-                BetFactory.create(match=self.past_match2, user=self.user1, home_score=1, away_score=3),
-                BetFactory.create(match=self.past_match2, user=self.user2, home_score=0, away_score=0),
-            ],
-            [
-                None,
-                BetFactory.create(match=self.past_match3, user=self.user2, home_score=0, away_score=0),
-            ]
-        ]
-
-        self.past_match.set_score(home_score=2, away_score=0)
-        self.past_match2.set_score(home_score=0, away_score=0)
-
-        super().setUp()
+        super().setUp(set_up_data = True)
 
     def test_page_shows_matches(self):
         # Ugo goes to main page and see
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.url)
         # column with mathces
         Page = MatchesPage(self)
         matches = Page.get_matches()
@@ -69,7 +40,7 @@ class MatchesTableTest(FunctionalTest):
 
     def test_page_shows_users(self):
         # Ugo goes to main page and see
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.url)
         # row with users
         Page = MatchesPage(self)
         users = Page.get_users()
@@ -79,7 +50,7 @@ class MatchesTableTest(FunctionalTest):
 
     def test_page_shows_users_bets_for_future_matches(self):
         # Ugo goes to main page and see
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.url)
         # his bet he placed before on match Ajax-Barcelona.
         Page = MatchesPage(self)
         bet = Page.find_bet('Ajax', 'Barcelona', 'ugo')
@@ -90,7 +61,7 @@ class MatchesTableTest(FunctionalTest):
 
     def test_page_shows_points_for_past_matches_with_results(self):
         # Ugo goes to main page and see
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.url)
         # an empty cell for Bordo-Chelsea, because he didn't bet that match
         Page = MatchesPage(self)
         bet_result = Page.find_bet_result('Bordo', 'Chelsea', 'ugo')
@@ -101,7 +72,7 @@ class MatchesTableTest(FunctionalTest):
 
     def test_page_shows_bet_for_past_matches_without_results(self):
         # Ugo goes to main page and see
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.url)
         # an empty cell for Chelsea-Ajax, because he didn't bet that match
         Page = MatchesPage(self)
         bet_result = Page.find_bet('Chelsea', 'Ajax', 'ugo')
@@ -112,7 +83,7 @@ class MatchesTableTest(FunctionalTest):
 
     def test_page_shows_total_row(self):
         # Ugo goes to main page
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.url)
         Page = MatchesPage(self)
         # and see total points for all users
         self.assertEqual(Page.get_total('ugo'), '1')
@@ -120,7 +91,7 @@ class MatchesTableTest(FunctionalTest):
 
     def test_cant_be_navigated_to_user_bets_if_not_authenticated(self):
         # Ugo goes to main page
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.url)
         # And he does not see button 'My bets'
         Page = NavPage(self)
         with self.assertRaises(NoSuchElementException):
@@ -128,7 +99,7 @@ class MatchesTableTest(FunctionalTest):
 
     def test_12_points_are_highlighted(self):
         # Ugo goes to main page
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.url)
         Page = MatchesPage(self)
         # and see that 12 points cell is highlighted
         bet_result = Page.find_bet_result('Bordo', 'Chelsea', 'ada')
@@ -141,7 +112,7 @@ class MatchesTableTest(FunctionalTest):
 
     def test_switching_between_bets_and_points(self):
         # Ugo goes to main page
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.url)
         Page = MatchesPage(self)
         # and see switcher in position for showing points
         self.wait_for(lambda : self.assertTrue(Page.switcher_is_on()))
@@ -157,7 +128,7 @@ class MatchesTableTest(FunctionalTest):
 
     def test_page_shows_results_col(self):
         # Ugo goes to main page
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.url)
         Page = MatchesPage(self)
         # and see results for past_matches
         self.assertEqual(Page.get_result('Bordo','Chelsea'), '2 - 0')

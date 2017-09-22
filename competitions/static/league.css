@@ -1,0 +1,37 @@
+table#league tr td {
+    padding: 5px 20px;
+    width: 1px;
+    white-space: nowrap;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+tr.user:nth-child(odd) {
+    background-color: #f8f8f8;
+}
+
+table#league tr td.username {
+    width: 200px;
+    text-align: left;
+}
+
+table#league {
+    margin: auto;
+}
+
+thead tr {
+    background-color: lightgreen;
+    font-weight: bold;
+}
+
+tr.user:nth-child(1) td.position {
+    background: gold;
+}
+
+tr.user:nth-child(2) td.position {
+    background: silver;
+}
+
+tr.user:nth-child(3) td.position {
+    background: #a17419;
+}
