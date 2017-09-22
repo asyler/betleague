@@ -1,7 +1,7 @@
 from unittest import skip
 
 from functional_tests.base import FunctionalTest
-from functional_tests.pages.league import LeaguePage
+from functional_tests.pages.matches import MatchesPage
 from functional_tests.pages.nav import NavPage
 from functional_tests.pages.user_bets import UserBetsPage
 from matches.factories import FutureMatchFactory, PastMatchFactory, BetFactory
@@ -80,7 +80,7 @@ class UserBetsTest(FunctionalTest):
         # Now he goes to main league page
         self.browser.get(self.live_server_url)
         # and see same bets from him on the same matches
-        league_page = LeaguePage(self)
+        league_page = MatchesPage(self)
         matches = league_page.get_matches()
         bet1 = league_page.find_bet('Ajax', 'Barcelona', 'ugo')
         bet2 = league_page.find_bet('Barcelona', 'Ajax', 'ugo')

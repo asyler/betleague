@@ -2,7 +2,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 from accounts.factories import UserFactory
 from functional_tests.base import FunctionalTest
-from functional_tests.pages.league import LeaguePage
+from functional_tests.pages.matches import MatchesPage
 from functional_tests.pages.nav import NavPage
 from matches.factories import FutureMatchFactory, PastMatchFactory, BetFactory
 
@@ -15,10 +15,10 @@ class SmokeTest(FunctionalTest):
         self.assertEqual(self.browser.title, 'Betleague')
         # and table in body:
 
-        LeaguePage(self).get_league_table()  # should not raise
+        MatchesPage(self).get_table()  # should not raise
 
 
-class LeagueTableTest(FunctionalTest):
+class MatchesTableTest(FunctionalTest):
     def setUp(self):
         self.future_match = FutureMatchFactory.create(home_team='Ajax', away_team='Barcelona',
                                                       datetime="2017-01-09 05:04+00:00")
@@ -58,7 +58,7 @@ class LeagueTableTest(FunctionalTest):
         # Ugo goes to main page and see
         self.browser.get(self.live_server_url)
         # column with mathces
-        Page = LeaguePage(self)
+        Page = MatchesPage(self)
         matches = Page.get_matches()
         self.assertEqual(len(matches), 4)
         # with match date, time, away and home teams
@@ -71,7 +71,7 @@ class LeagueTableTest(FunctionalTest):
         # Ugo goes to main page and see
         self.browser.get(self.live_server_url)
         # row with users
-        Page = LeaguePage(self)
+        Page = MatchesPage(self)
         users = Page.get_users()
         self.assertEqual(len(users), 2)
         self.assertEqual(Page.get_user_username(users[0]), 'ugo')
@@ -81,7 +81,7 @@ class LeagueTableTest(FunctionalTest):
         # Ugo goes to main page and see
         self.browser.get(self.live_server_url)
         # his bet he placed before on match Ajax-Barcelona.
-        Page = LeaguePage(self)
+        Page = MatchesPage(self)
         bet = Page.find_bet('Ajax', 'Barcelona', 'ugo')
         self.assertEqual(bet.text, '2 - 1')
         # Also he notices bet from ada on Bordo-Chelsea
@@ -92,7 +92,7 @@ class LeagueTableTest(FunctionalTest):
         # Ugo goes to main page and see
         self.browser.get(self.live_server_url)
         # an empty cell for Bordo-Chelsea, because he didn't bet that match
-        Page = LeaguePage(self)
+        Page = MatchesPage(self)
         bet_result = Page.find_bet_result('Bordo', 'Chelsea', 'ugo')
         self.assertEqual(bet_result.text, '')
         # and points for same match from ada.
@@ -103,7 +103,7 @@ class LeagueTableTest(FunctionalTest):
         # Ugo goes to main page and see
         self.browser.get(self.live_server_url)
         # an empty cell for Chelsea-Ajax, because he didn't bet that match
-        Page = LeaguePage(self)
+        Page = MatchesPage(self)
         bet_result = Page.find_bet('Chelsea', 'Ajax', 'ugo')
         self.assertEqual(bet_result.text, '')
         # and bet for same match from ada.
@@ -113,7 +113,7 @@ class LeagueTableTest(FunctionalTest):
     def test_page_shows_total_row(self):
         # Ugo goes to main page
         self.browser.get(self.live_server_url)
-        Page = LeaguePage(self)
+        Page = MatchesPage(self)
         # and see total points for all users
         self.assertEqual(Page.get_total('ugo'), '1')
         self.assertEqual(Page.get_total('ada'), '24')
@@ -129,7 +129,7 @@ class LeagueTableTest(FunctionalTest):
     def test_12_points_are_highlighted(self):
         # Ugo goes to main page
         self.browser.get(self.live_server_url)
-        Page = LeaguePage(self)
+        Page = MatchesPage(self)
         # and see that 12 points cell is highlighted
         bet_result = Page.find_bet_result('Bordo', 'Chelsea', 'ada')
         self.assertEqual(bet_result.text, '12')
@@ -138,3 +138,19 @@ class LeagueTableTest(FunctionalTest):
         bet_result = Page.find_bet_result('Bordo', 'Ajax', 'ugo')
         self.assertNotEqual(bet_result.text, '12')
         self.assertNotIn('highlighted', bet_result.get_attribute('class'))
+
+    def test_switching_between_bets_and_points(self):
+        # Ugo goes to main page
+        self.browser.get(self.live_server_url)
+        Page = MatchesPage(self)
+        # and see switcher in position for showing points
+        self.wait_for(lambda : self.assertTrue(Page.switcher_is_on()))
+        # and points for past matches are shown
+        bet_result = Page.find_bet_result('Bordo', 'Chelsea', 'ada')
+        self.assertEqual(bet_result.text, '12')
+        # He switches it to bets position
+        Page.switcher_click()
+        # and now sees bets for past matches
+        self.assertFalse(Page.switcher_is_on())
+        bet = Page.find_bet('Bordo', 'Chelsea', 'ada')
+        self.assertEqual(bet.text, '2 - 0')

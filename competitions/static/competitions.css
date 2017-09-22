@@ -72,7 +72,7 @@ tr.match {
     text-align: center;
 }
 
-#save_bets {
+#save_bets, .toggle.btn {
     margin-top: 10px;
 }
 

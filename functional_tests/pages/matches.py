@@ -1,8 +1,8 @@
-class LeaguePage(object):
+class MatchesPage(object):
     def __init__(self, test):
         self.test = test
 
-    def get_league_table(self):
+    def get_table(self):
         return self.test.browser.find_element_by_id('results_table')
 
     def get_matches(self):
@@ -54,3 +54,12 @@ class LeaguePage(object):
         user_index = self.find_user_index(username)
         total_row = self.get_total_row()
         return total_row.find_elements_by_css_selector('td.points')[user_index].text
+
+    def get_bet_points_switcher(self):
+        return self.test.browser.find_element_by_css_selector('#bet_points_switcher')
+
+    def switcher_is_on(self):
+        return 'off' not in self.test.browser.find_element_by_css_selector('.toggle.btn').get_attribute('class')
+
+    def switcher_click(self):
+        self.test.browser.find_element_by_css_selector('.toggle.btn').click()

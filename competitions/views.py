@@ -18,7 +18,7 @@ def league(request):
     for bet in bets:
         matches_array[bet.match.pk].bets[bet.user.pk] = bet
 
-    return render(request, 'league.html', {
+    return render(request, 'matches.html', {
         'matches': matches_array,
         'users': users,
     })

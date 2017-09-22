@@ -16,9 +16,9 @@ class LeaguePageTest(TestCase):
         view = resolve('/')
         self.assertEqual(view.func, league)
 
-    def test_uses_league_template(self):
+    def test_uses_matches_template(self):
         response = self.client.get('/')
-        self.assertTemplateUsed(response, 'league.html')
+        self.assertTemplateUsed(response, 'matches.html')
 
     def test_passes_matches_to_template(self):
         response = self.client.get('/')
