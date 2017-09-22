@@ -90,6 +90,14 @@ class UserBetsPageTest(TestCase):
         bet = Bet.objects.filter(user=self.user, match=past_match).first()
         self.assertEqual(bet, None)
 
+    def test_for_empty_input_nor_saving_nor_raising_error(self):
+        response = self.client.post(self.url, data={
+            'match_1': ''
+        }, follow=True)
+        bet = Bet.objects.filter(user=self.user, match=self.future_match1).first()
+        self.assertEqual(bet, None)
+        self.assertEqual(0, len(response.context.get('messages')))
+
 
 class UserBetsPageUnauthorized(TestCase):
     def test_page_view_redirects_unauthorized_user(self):
