@@ -7,3 +7,4 @@ functional_tests/screendumps
 /debug.log
 /data.json
 *.csv
+/static/
