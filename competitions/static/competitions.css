@@ -27,6 +27,13 @@ td.bet_result, td.bet, td.username, td.points, td.result {
     white-space: nowrap;
 }
 
+td.date,
+td.time,
+td.home_team,
+td.away_team {
+    border-left: 1px solid #aaa;
+}
+
 tr.match > td {
     padding: 5px 10px;
 }
@@ -75,6 +82,7 @@ tr.match {
 
 #bets_table {
     margin: auto;
+    margin-bottom: 10px;
 }
 
 .saved_alert {
