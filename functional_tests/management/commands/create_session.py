@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
 
 def create_pre_authenticated_session(username):
-    user = User.objects.create_user(username=username, password='xxx')
+    user = User.objects.create_user(username=username, password=username+'666')
     session = SessionStore()
     session[SESSION_KEY] = user.pk
     session[BACKEND_SESSION_KEY] = settings.AUTHENTICATION_BACKENDS[0]

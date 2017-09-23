@@ -79,6 +79,10 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser.find_element_by_link_text('Log out')
 
     @wait
+    def wait_to_be_logged_out(self):
+        self.browser.find_element_by_link_text('Login')
+
+    @wait
     def wait_for(self, fn):
         return fn()
 
