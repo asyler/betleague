@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count, Case, When, IntegerField
+from django.db.models.functions import Coalesce
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -9,7 +10,7 @@ from matches.models import Match, Bet
 
 def matches(request):
     matches = Match.objects.all()
-    users = User.objects.annotate(total_points=Sum('bet__result')).order_by('pk').all()
+    users = User.objects.annotate(total_points=Coalesce(Sum('bet__result'),0)).order_by('pk').all()
     bets = Bet.objects.all().select_related('match')
 
     matches_array = {}
@@ -26,7 +27,7 @@ def matches(request):
 
 def league(request):
     users = User.objects.annotate(
-        points=Sum('bet__result'),
+        points=Coalesce(Sum('bet__result'),0),
         matches_bet=Count('bet'),
         guess_hits=Count(Case(When(bet__result=12, then=1))
         )
