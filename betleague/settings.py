@@ -24,7 +24,7 @@ SECRET_KEY = '01_h%-grmbhldp9588#689=g#55$4zz)$33rhu=r1i%p_dog0#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['betleague-staging.herokuapp.com', 'betleague.herokuapp.com']
 
 # Application definition
 
