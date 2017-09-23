@@ -24,7 +24,7 @@ SECRET_KEY = '01_h%-grmbhldp9588#689=g#55$4zz)$33rhu=r1i%p_dog0#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['betleague-staging.herokuapp.com', 'betleague.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', 'betleague-staging.herokuapp.com', 'betleague.herokuapp.com']
 
 # Application definition
 
@@ -119,3 +119,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 LOGIN_REDIRECT_URL = '/'
+
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
