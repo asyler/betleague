@@ -1,5 +1,8 @@
 import csv
+import string
 from datetime import datetime
+from random import choice
+
 from django.utils import timezone
 
 import re
@@ -9,6 +12,10 @@ from django.core.management.base import BaseCommand, CommandError
 
 from matches.models import Match, Bet, parse_score
 
+ALLCHAR = string.ascii_letters + string.punctuation + string.digits
+
+def generate_password():
+    return "".join(choice(ALLCHAR) for x in range(10))
 
 class Command(BaseCommand):
     help = 'Load data from google docs'
@@ -23,7 +30,15 @@ class Command(BaseCommand):
         f = options['dump_file'][0]
         data = csv.reader(f)
         usernames = next(data)[3:-1]
-        users = [User.objects.create(username=username) for username in usernames]
+        users = []
+        for username in usernames:
+            user = User.objects.create(username=username)
+            password = generate_password()
+            user.set_password(password)
+            self.stdout.write(self.style.NOTICE(f'{username}: {password}'))
+            user.save()
+            users.append(user)
+
         for row in data:
             datetime_object = timezone.make_aware(datetime.strptime('2017'+row[0]+row[1], '%Y%d.%m%H:%M'))
             home_team, away_team = row[2].split(' — ')
