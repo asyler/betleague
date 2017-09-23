@@ -3,7 +3,7 @@ __pycache__
 *.pyc
 .idea
 functional_tests/screendumps
-/geckodriver.log
+*.log
 /debug.log
 /data.json
 *.csv

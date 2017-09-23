@@ -33,7 +33,8 @@ def wait(fn):
 
 class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self, set_up_data = False):
-        self.browser = webdriver.Firefox()
+        self.browser = webdriver.PhantomJS()
+        self.browser.set_window_size(800, 600)
 
         if set_up_data:
             self.setUpData()
@@ -95,11 +96,16 @@ class FunctionalTest(StaticLiveServerTestCase):
         cookies = dict(
             name=settings.SESSION_COOKIE_NAME,
             value=session_key,
-            # secure=False,
+            secure=False,
             path='/',
+            domain='localhost'
         )
 
-        self.browser.add_cookie(cookies)
+        try:
+            self.browser.add_cookie(cookies)
+        except WebDriverException:
+            # despite exception cookie finally is set up
+            pass
 
         return user
 
