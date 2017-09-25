@@ -33,10 +33,10 @@ class MatchesTableTest(FunctionalTest):
         matches = Page.get_matches()
         self.assertEqual(len(matches), 4)
         # with match date, time, away and home teams
-        self.assertEqual(Page.get_match_info(matches[0], 'home_team'), 'Ajax')
-        self.assertEqual(Page.get_match_info(matches[1], 'away_team'), 'Chelsea')
-        self.assertEqual(Page.get_match_info(matches[0], 'date'), '09.01.2017')
-        self.assertEqual(Page.get_match_info(matches[0], 'time'), '07:04')  # using timezone
+        self.assertEqual(Page.get_match_info(matches[0], 'home_team'), 'Bordo')
+        self.assertEqual(Page.get_match_info(matches[1], 'away_team'), 'Ajax')
+        self.assertEqual(Page.get_match_info(matches[3], 'date'), '09.01.2047')
+        self.assertEqual(Page.get_match_info(matches[3], 'time'), '07:04')  # using timezone
 
     def test_page_shows_users(self):
         # Ugo goes to main page and see
@@ -132,3 +132,13 @@ class MatchesTableTest(FunctionalTest):
         Page = MatchesPage(self)
         # and see results for past_matches
         self.assertEqual(Page.get_result('Bordo','Chelsea'), '2 - 0')
+
+    def test_past_matches_with_results_are_highlighted(self):
+        # Ugo goes to main page
+        self.browser.get(self.url)
+        Page = MatchesPage(self)
+        # and see results for past_matches
+        self.assertIn('past', Page.get_matches()[0].get_attribute('class'))
+        self.assertIn('past', Page.get_matches()[1].get_attribute('class'))
+        self.assertNotIn('past', Page.get_matches()[2].get_attribute('class'))
+        self.assertNotIn('past', Page.get_matches()[3].get_attribute('class'))

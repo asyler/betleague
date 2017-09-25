@@ -68,8 +68,11 @@ class MatchesPage(object):
     def switcher_click(self):
         self.test.browser.find_element_by_css_selector('.toggle.btn').click()
 
+    def get_result_element(self, home_team, away_team):
+        match = self.find_match(home_team, away_team)
+        return match.find_element_by_class_name('result')
+
     def get_result(self, home_team, away_team):
-        match = self.find_match( home_team, away_team)
-        return match.find_element_by_class_name('result').text
+        return self.get_result_element(home_team,away_team).text
 
 

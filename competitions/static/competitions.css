@@ -92,3 +92,11 @@ tr.match {
     margin-right: 50px;
     padding: 10px 40px;
 }
+
+.result {
+    font-weight: bold;
+}
+
+.match.past {
+    color: gray;
+}

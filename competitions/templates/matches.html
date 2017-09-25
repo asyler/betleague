@@ -37,7 +37,7 @@
         </thead>
         <tbody>
             {% for match in matches.values %}
-                <tr class="match">
+                <tr class="match {% if match.has_result and not match.in_future %}past{% endif %}">
                     <td class="date">{{ match.datetime|date:"d.m.Y" }}</td>
                     <td class="time">{{ match.datetime|date:"H:i" }}</td>
                     <td class="home_team">{{ match.home_team }}</td>

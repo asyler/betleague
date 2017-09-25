@@ -110,12 +110,12 @@ class FunctionalTest(StaticLiveServerTestCase):
         return user
 
     def setUpData(self):
-        self.future_match = FutureMatchFactory.create(home_team='Ajax', away_team='Barcelona',
-                                                      datetime="2017-01-09 05:04+00:00")
         self.past_match = PastMatchFactory.create(home_team='Bordo', away_team='Chelsea')
         self.past_match2 = PastMatchFactory.create(home_team='Bordo', away_team='Ajax')
         self.past_match3 = PastMatchFactory.create(home_team='Chelsea', away_team='Ajax',
                                                    home_score=None, away_score=None)
+        self.future_match = FutureMatchFactory.create(home_team='Ajax', away_team='Barcelona',
+                                                      datetime="2047-01-09 05:04+00:00")
 
         self.user1 = UserFactory.create(username='ugo')
         self.user2 = UserFactory.create(username='ada')
