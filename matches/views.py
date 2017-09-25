@@ -31,11 +31,12 @@ def user_bets(request):
         messages.success(request, 'Saved', extra_tags='saved')
         return redirect('user_bets')
 
-    matches = Match.objects.filter(Q(bet__user=request.user.pk) | Q(bet__user=None)).all() \
-        .annotate(bet_home_score=F('bet__home_score'), bet_away_score=F('bet__away_score'))
+    matches = Match.objects.order_by('datetime').all()
     for match in matches:
-        match.bet = Bet(match=match, user=request.user, home_score=match.bet_home_score,
-                        away_score=match.bet_away_score)
+        try:
+            match.bet = Bet.objects.get(match=match, user=request.user)
+        except Bet.DoesNotExist:
+            match.bet = Bet(user=request.user, match=match)
     return render(request, 'user_bets.html', {
         'matches': matches
     })

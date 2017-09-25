@@ -54,7 +54,7 @@
                             {{ match.bets|get_item:user.pk|default_if_none:'' }}
                         </td>
                     {% endfor %}
-                    <td class="result">{{ match }}</td>
+                    <td class="result">{{ match.result }}</td>
                 </tr>
             {% endfor %}
         </tbody>

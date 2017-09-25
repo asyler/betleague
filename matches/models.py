@@ -39,6 +39,12 @@ class Match(models.Model):
     def has_result(self):
         return self.home_score is not None
 
+    @property
+    def result(self):
+        if not self.has_result:
+            return ''
+        return f'{self.home_score} - {self.away_score}'
+
     def set_score(self, home_score, away_score):
         if not self.in_future:
             self.home_score = home_score
@@ -47,10 +53,11 @@ class Match(models.Model):
 
             [b.set_result() for b in self.bet_set.all()]
 
+
     def __str__(self):
-        if self.home_score is None:
-            return ''
-        return '{} - {}'.format(self.home_score, self.away_score)
+        home_score = f' {self.home_score}' if self.has_result else ''
+        away_score = f'{self.away_score} ' if self.has_result else ''
+        return '{}{} - {}{}'.format(self.home_team, home_score, away_score, self.away_team)
 
 
 def validate_match_datetime(value):

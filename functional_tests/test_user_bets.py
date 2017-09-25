@@ -53,7 +53,7 @@ class UserBetsTest(FunctionalTest):
         # He sees 2 past matches for now
         matches = Page.get_matches()
         # For both of them he sees his bet
-        self.assertEqual(Page.get_match_body(matches[3]), '2 - 1')
+        self.assertEqual(Page.get_match_body(matches[1]), '2 - 1')
         # and no input
         self.assertNotIn('input', Page.get_match_body(matches[2]))
 
@@ -63,8 +63,8 @@ class UserBetsTest(FunctionalTest):
         Page.go()
         # He sees input fields for two future matches
         matches = Page.get_matches()
-        input1 = Page.get_match_input(matches[0])
-        input2 = Page.get_match_input(matches[1])
+        input1 = Page.get_match_input(matches[2])
+        input2 = Page.get_match_input(matches[3])
         # He sees his current bet on first match it
         self.assertEqual(input1.get_attribute('value'), '5 - 1')
         # and no bet on another match
@@ -78,7 +78,7 @@ class UserBetsTest(FunctionalTest):
         Page.press_save_button()
         # Page reloads and now he sees same fields with his new bets
         self.wait_for(
-            lambda: self.assertEqual(Page.get_match_input(Page.get_matches()[0]).get_attribute('value'), '3 - 1'))
+            lambda: self.assertEqual(Page.get_match_input(Page.get_matches()[2]).get_attribute('value'), '3 - 1'))
         # Now he goes to main league page
         self.browser.get(self.live_server_url+reverse('matches'))
         # and see same bets from him on the same matches
@@ -95,8 +95,8 @@ class UserBetsTest(FunctionalTest):
         Page.go()
         # He sees input fields for two future matches
         matches = Page.get_matches()
-        input1 = Page.get_match_input(matches[0])
-        input2 = Page.get_match_input(matches[1])
+        input1 = Page.get_match_input(matches[2])
+        input2 = Page.get_match_input(matches[3])
         # He places correct bet on first match
         input1.clear()
         input1.send_keys('3 - 1')
@@ -106,11 +106,11 @@ class UserBetsTest(FunctionalTest):
         Page.press_save_button()
         # Page reloads and now he sees first match with placed bet
         self.wait_for(
-            lambda: self.assertEqual(Page.get_match_input(Page.get_matches()[0]).get_attribute('value'), '3 - 1'))
+            lambda: self.assertEqual(Page.get_match_input(Page.get_matches()[2]).get_attribute('value'), '3 - 1'))
         # and second match with no bet as it was
-        self.assertEqual(Page.get_match_input(Page.get_matches()[1]).get_attribute('value'), '')
+        self.assertEqual(Page.get_match_input(Page.get_matches()[3]).get_attribute('value'), '')
         # and error near it
-        self.assertEqual(Page.get_match_error(Page.get_matches()[1]), WRONG_BET_FORMAT_ERROR)
+        self.assertEqual(Page.get_match_error(Page.get_matches()[3]), WRONG_BET_FORMAT_ERROR)
 
     def test_after_save_alert_shown(self):
         Page = UserBetsPage(self)

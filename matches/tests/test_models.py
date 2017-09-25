@@ -62,12 +62,26 @@ class MatchModelTest(TestCase):
         self.assertFalse(match.has_result)
 
     def test_has_string_representation(self):
-        match = PastMatchFactory(home_score=0, away_score=1)
-        self.assertEqual(str(match), '0 - 1')
+        match = PastMatchFactory(
+            home_team='A', away_team='B',
+            home_score=0, away_score=1
+        )
+        self.assertEqual(str(match), 'A 0 - 1 B')
 
     def test_match_without_result_has_empty_string_representation(self):
+        match = PastMatchFactory(
+            home_team='A', away_team='B',
+            home_score=None, away_score=None
+        )
+        self.assertEqual(str(match), 'A - B')
+
+    def test_match_has_result_property(self):
+        match = PastMatchFactory(home_score=0, away_score=1)
+        self.assertEqual(match.result, '0 - 1')
+
+    def test_match_has_result_property_for_no_result(self):
         match = PastMatchFactory(home_score=None, away_score=None)
-        self.assertEqual(str(match), '')
+        self.assertEqual(match.result, '')
 
 
 class BetModelTest(TestCase):
