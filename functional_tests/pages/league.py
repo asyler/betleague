@@ -11,6 +11,9 @@ class LeaguePage(object):
     def go(self):
         self.test.browser.get(self.url)
 
+    def find_user_row(self, username):
+        return self.test.browser.find_element(By.XPATH, f'//td[@class="username"][text()="{username}"]/..')
+
     def find_user(self, username):
         return self.test.browser.find_element(By.XPATH, f'//td[@class="username"][text()="{username}"]')
 

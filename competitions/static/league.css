@@ -35,3 +35,7 @@ tr.user:nth-child(2) td.position {
 tr.user:nth-child(3) td.position {
     background: #a17419;
 }
+
+tr.highlighted {
+    font-weight: bold;
+}

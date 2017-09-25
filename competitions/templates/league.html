@@ -17,13 +17,13 @@
                 <td>12</td>
             </tr>
         </thead>
-        {% for user in users %}
-            <tr class="user">
+        {% for user_ in users %}
+            <tr class="user {% if user.username == user_.username %}highlighted{% endif %}">
                 <td class="position">{{ forloop.counter }}</td>
-                <td class="username">{{ user.username }}</td>
-                <td class="points">{{ user.points }}</td>
-                <td class="matches_bet">{{ user.matches_bet }}</td>
-                <td class="guess_hits">{{ user.guess_hits }}</td>
+                <td class="username">{{ user_.username }}</td>
+                <td class="points">{{ user_.points }}</td>
+                <td class="matches_bet">{{ user_.matches_bet }}</td>
+                <td class="guess_hits">{{ user_.guess_hits }}</td>
             </tr>
         {% endfor %}
     </table>
