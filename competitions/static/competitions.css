@@ -15,6 +15,7 @@ td.bet_result, td.bet, td.username, td.points, td.result {
     border-left: 1px solid #aaa;
     padding: 5px;
     width: 1px;
+    white-space: nowrap;
 }
 
 #results_table td.colspan,
