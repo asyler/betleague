@@ -31,6 +31,9 @@
         {% block extra_nav %}{% endblock %}
 
         <ul class="nav navbar-nav navbar-right">
+            {% if user.is_staff %}
+                <li class="navbar-link"><a href="{% url 'admin:matches_match_changelist' %}">Edit matches</a></li>
+            {% endif %}
             {% if user.is_authenticated %}
                 <li class="navbar-link"><a href="{% url 'password_change' %}">Change password</a></li>
                 <li class="navbar-text">Logged in as {{ user.username }}</li>

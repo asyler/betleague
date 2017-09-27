@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.urls import reverse
 
 import accounts.urls as accounts_urls
 import matches.views as matches_views
