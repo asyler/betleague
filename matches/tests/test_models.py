@@ -83,6 +83,23 @@ class MatchModelTest(TestCase):
         match = PastMatchFactory(home_score=None, away_score=None)
         self.assertEqual(match.result, '')
 
+    @patch('matches.models.Bet.set_result')
+    def test_match_update_bets_calls_set_result_for_every_bet(self, mock_set_result):
+        user1 = UserFactory.create()
+        user2 = UserFactory.create()
+        match = PastMatchFactory(home_score=1, away_score=2)
+        bet1 = BetFactory(match=match, user=user1)
+        BetFactory(match=match, user=user2)
+        match.update_bets()
+        self.assertEqual(mock_set_result.call_count,2)
+
+    @patch('matches.models.Match.update_bets')
+    def test_match_saves_with_scores_calls_update_bets(self, mock_update_bets):
+        match = PastMatchFactory(home_score=None, away_score=None)
+        match.home_score = 1
+        match.home_score = 1
+        match.save()
+        self.assertTrue(mock_update_bets.called)
 
 class BetModelTest(TestCase):
     @classmethod
