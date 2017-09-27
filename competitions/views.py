@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from django.contrib.auth.models import User
 from django.db.models import Sum, Count, Case, When, IntegerField
 from django.db.models.functions import Coalesce
@@ -9,11 +11,11 @@ from matches.models import Match, Bet
 
 
 def matches(request):
-    matches = Match.objects.all()
+    matches = Match.objects.order_by('datetime').all()
     users = User.objects.annotate(total_points=Coalesce(Sum('bet__result'),0)).order_by('pk').all()
     bets = Bet.objects.all().select_related('match')
 
-    matches_array = {}
+    matches_array = OrderedDict()
     for match in matches:
         match.bets = {}
         matches_array[match.pk] = match
