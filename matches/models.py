@@ -10,6 +10,7 @@ from . import bet_result
 
 PAST_MATCH_ERROR = 'Can\'t bet for past match'
 WRONG_BET_FORMAT_ERROR = 'Wrong bet format'
+WRONG_SHOOTOUT_FORMAT_ERROR = 'Something wrong with shootout winner'
 
 class EmptyBet(Exception):
      pass
@@ -30,6 +31,8 @@ class Match(models.Model):
     datetime = models.DateTimeField()
     home_score = models.IntegerField(null=True, blank=True)
     away_score = models.IntegerField(null=True, blank=True)
+    can_have_penalty_shootout = models.BooleanField(default=False)
+    shootout_winner = models.NullBooleanField()
 
     @property
     def in_future(self):
@@ -77,6 +80,8 @@ class Bet(models.Model):
     match = models.ForeignKey(Match, validators=[validate_match_datetime])
     user = models.ForeignKey(User)
     result = models.IntegerField(null=True, blank=True)
+    shootout_winner = models.NullBooleanField()
+    # false for home team, true for away team
 
     def set_result(self):
         self.result = bet_result.calc_bet_result(
@@ -84,6 +89,8 @@ class Bet(models.Model):
             away_bet=self.away_score,
             home_score=self.match.home_score,
             away_score=self.match.away_score,
+            shootout_winner=self.shootout_winner,
+            shootout_bet=self.match.shootout_winner,
         )
         self.save()
 
