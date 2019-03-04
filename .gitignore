@@ -8,3 +8,4 @@ functional_tests/screendumps
 /data.json
 *.csv
 /static/
+*.dump
