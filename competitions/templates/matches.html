@@ -50,11 +50,23 @@
                             </td>
                             {% endwith %}
                         {% endif %}
+						{% with match.bets|get_item:user.pk|get_property:'shootout_winner' as shootout_winner %}
                         <td class="bet {% if match.has_result %}bet_with_result hidden{% endif %}">
                             {{ match.bets|get_item:user.pk|default_if_none:'' }}
+							{% if shootout_winner is not None %}
+								({% if shootout_winner == True %}{{ match.away_team }}{% else %}{{ match.home_team }}{% endif %})
+							{% endif %}
                         </td>
+						{% endwith %}
                     {% endfor %}
-                    <td class="result">{{ match.result }}</td>
+                    <td class="result">
+						{{ match.result }}
+						{% with match.shootout_winner as shootout_winner %}
+							{% if shootout_winner is not None %}
+								({% if shootout_winner == True %}{{ match.away_team }}{% else %}{{ match.home_team }}{% endif %})
+							{% endif %}
+						{% endwith %}
+					</td>
                 </tr>
             {% endfor %}
         </tbody>
