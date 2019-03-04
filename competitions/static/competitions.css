@@ -25,9 +25,12 @@ tr.header > td {
     white-space: nowrap;
 }
 
+td.shootout_winner {
+    text-align: left;
+}
+
 td.shootout_winner label {
     font-weight: normal;
-    float: left;
 }
 
 td.reset_radio {
