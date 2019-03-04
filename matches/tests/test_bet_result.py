@@ -39,3 +39,40 @@ class BetResultTest(TestCase):
     def test_score_guessed_bet(self):
         result = calc_bet_result(home_bet=4, away_bet=3, home_score=4, away_score=3)
         self.assertEqual(result, 12)
+
+    def test_goal_difference_and_shootout_guessed_bet(self):
+        result = calc_bet_result(
+            home_bet=1, away_bet=0,
+            home_score=4, away_score=3,
+            shootout_bet=False,
+            shootout_winner=False,
+        )
+        self.assertEqual(result, 10)
+
+    def test_score_and_shootout_guessed_bet(self):
+        result = calc_bet_result(
+            home_bet=4, away_bet=3,
+            home_score=4, away_score=3,
+            shootout_bet=False,
+            shootout_winner=False,
+        )
+        self.assertEqual(result, 16)
+
+    def test_score_guessed_but_not_shootout_bet(self):
+        result = calc_bet_result(
+            home_bet=4, away_bet=3,
+            home_score=4, away_score=3,
+            shootout_bet=False,
+            shootout_winner=True,
+        )
+        self.assertEqual(result, 12)
+
+    def test_diff_not_guessed_but_shootout_guessed_bet(self):
+        # if user bet on different diff he couldn't bet on penalties
+        result = calc_bet_result(
+            home_bet=0, away_bet=4,
+            home_score=4, away_score=3,
+            shootout_bet=True,
+            shootout_winner=True,
+        )
+        self.assertEqual(result, 1)

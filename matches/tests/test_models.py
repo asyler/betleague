@@ -168,8 +168,14 @@ class BetModelTest(TestCase):
 
         self.assertEqual(mock_calc_bet_result.call_count, 2)
         mock_calc_bet_result.assert_has_calls([
-            call(home_bet=4, away_bet=3, home_score=2, away_score=1),
-            call(home_bet=2, away_bet=1, home_score=2, away_score=1)
+            call(
+                home_bet=4, away_bet=3, home_score=2, away_score=1,
+                shootout_winner=None, shootout_bet=None,
+            ),
+            call(
+                home_bet=2, away_bet=1, home_score=2, away_score=1,
+                shootout_winner=None, shootout_bet=None,
+            )
         ])
 
     def test_past_match_set_score_set_all_match_bets_results(self):
