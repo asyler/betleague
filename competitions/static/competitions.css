@@ -2,6 +2,12 @@ td.username {
     font-weight: bold;
 }
 
+tr.header {
+    background-color: #f8f8f8;
+    font-weight: bold;
+    border-bottom: 1px solid #aaa;
+}
+
 tr.match:nth-child(odd) {
     background-color: #f8f8f8;
 }
@@ -10,12 +16,27 @@ tr#total, tr#users .result {
     border-bottom: 1px solid #aaa;
 }
 
-td.bet_result, td.bet, td.username, td.points, td.result {
+td.bet_result, td.bet, td.username, td.points, td.result, td.shootout_winner,
+tr.header > td {
     text-align: center;
     border-left: 1px solid #aaa;
     padding: 5px;
     width: 1px;
     white-space: nowrap;
+}
+
+td.shootout_winner label {
+    font-weight: normal;
+    float: left;
+}
+
+td.reset_radio {
+    text-align: right;
+}
+
+span.reset_link {
+    color: blue;
+    cursor: pointer;
 }
 
 #results_table td.colspan,

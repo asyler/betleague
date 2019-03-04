@@ -25,6 +25,14 @@
     <form action="{% url 'user_bets' %}" method="POST">
         {% csrf_token %}
         <table id="bets_table">
+			<tr class="header">
+				<td>Date</td>
+				<td>Time</td>
+				<td>Home team</td>
+				<td>Away team</td>
+				<td>Your bet</td>
+				<td colspan="2">Penalty shootout winner (if applicable)</td>
+			</tr>
         {% for match in matches %}
             <tr class="match">
                 <td class="date">{{ match.datetime|date:"d.m.Y" }}</td>
@@ -46,6 +54,36 @@
                         {% endfor %}
                     {% endif %}
                 </td>
+				<td class="shootout_winner">
+					{% if match.can_have_penalty_shootout %}
+						<label>
+							<input
+									type="radio"
+								   	class="shootout_winner_radio"
+								   	name="match_{{ match.id }}_shootout_winner"
+								   	value="0"
+									{% if match.bet.shootout_winner == False %}checked{% endif %}
+							/>
+							{{ match.home_team }}
+						</label>
+						<br>
+						<label>
+							<input
+									type="radio"
+									class="shootout_winner_radio"
+									name="match_{{ match.id }}_shootout_winner"
+									value="1"
+									{% if match.bet.shootout_winner == True %}checked{% endif %}
+							/>
+							{{ match.away_team }}
+						</label>
+					{% endif %}
+				</td>
+				<td class="reset_radio">
+					{% if match.can_have_penalty_shootout %}
+					<span class="reset_link {% if match.bet.shootout_winner == None %}hidden{% endif %}">Reset</span>
+					{% endif %}
+				</td>
             </tr>
         {% endfor %}
         </table>

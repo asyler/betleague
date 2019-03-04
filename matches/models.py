@@ -99,7 +99,7 @@ class Bet(models.Model):
             return ''
         return '{} - {}'.format(self.home_score, self.away_score)
 
-    def set_bet(self, result):
+    def set_bet(self, result, shootout_result=None):
         if not self.match.in_future:
             raise ValidationError(PAST_MATCH_ERROR)
 
@@ -112,3 +112,8 @@ class Bet(models.Model):
             self.away_score = bet[1]
         else:
             raise ValidationError(WRONG_BET_FORMAT_ERROR)
+
+        if shootout_result is None or shootout_result in '01':
+                self.shootout_winner = shootout_result
+        else:
+            raise ValidationError(WRONG_SHOOTOUT_FORMAT_ERROR)
