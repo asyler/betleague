@@ -62,6 +62,7 @@
 								   	class="shootout_winner_radio"
 								   	name="match_{{ match.id }}_shootout_winner"
 								   	value="0"
+									{% if not match|get_property:'in_future' %}disabled{% endif %}
 									{% if match.bet.shootout_winner == False %}checked{% endif %}
 							/>
 							{{ match.home_team }}
@@ -73,6 +74,7 @@
 									class="shootout_winner_radio"
 									name="match_{{ match.id }}_shootout_winner"
 									value="1"
+									{% if not match|get_property:'in_future' %}disabled{% endif %}
 									{% if match.bet.shootout_winner == True %}checked{% endif %}
 							/>
 							{{ match.away_team }}
@@ -81,7 +83,7 @@
 				</td>
 				<td class="reset_radio">
 					{% if match.can_have_penalty_shootout %}
-					<span class="reset_link {% if match.bet.shootout_winner == None %}hidden{% endif %}">Reset</span>
+					<span class="reset_link {% if match.bet.shootout_winner == None or not match|get_property:'in_future' %}hidden{% endif %}">Reset</span>
 					{% endif %}
 				</td>
             </tr>
